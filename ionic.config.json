@@ -1,0 +1,7 @@
+{
+  "name": "IT_Ticketing",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
