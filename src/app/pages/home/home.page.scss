@@ -1,0 +1,76 @@
+ion-content {
+  --background: none;
+  background-image: url('../../../assets/bg.jpg'); /* Ruta de tu imagen de fondo */
+  background-size: cover; /* Ajusta la imagen para cubrir todo el área */
+  background-position: center; /* Centra la imagen */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+  width: 100vw; /* Asegúrate de que ocupa todo el ancho de la ventana */
+  height: 100vh; /* Asegúrate de que ocupa toda la altura de la ventana */
+}
+
+.card-container {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  width: 100%; /* Usa todo el ancho disponible */
+  height: 100%; /* Usa toda la altura disponible */
+  position: relative; /* Para poder posicionar elementos dentro */
+}
+
+.user-card {
+  text-align: center;
+  width: 90%; /* Ajusta el ancho según lo necesites */
+  max-width: 400px; /* Ajusta el ancho máximo de la tarjeta */
+  margin: 0 auto; /* Centra la tarjeta horizontalmente */
+  border-radius: 20px; /* Bordes redondeados para la tarjeta */
+  overflow: hidden; /* Para que los bordes redondeados funcionen */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Añadir sombra opcional para destacar la tarjeta */
+}
+
+.user-image {
+  width: 150px; /* Ajusta el tamaño de la imagen */
+  height: 150px; /* Ajusta el tamaño de la imagen */
+  border-radius: 50%; /* Hace la imagen redonda */
+  object-fit: cover; /* Mantiene la proporción de la imagen */
+  margin: 25px 0px 10px 0px ; /* Margen superior de la imagen */
+}
+
+.user-name {
+  font-weight: bold;
+  font-size: 1.2em; /* Tamaño del texto del nombre */
+}
+
+.user-email {
+  color: gray; /* Color gris para el email */
+  font-size: 0.9em; /* Tamaño del texto del email */
+}
+
+.button-container {
+  display: flex; /* Utiliza flexbox para alinear los botones */
+  justify-content: space-between; /* Espacio entre los botones */
+}
+
+.rounded-button {
+  border-radius: 20px; /* Bordes redondeados para los botones */
+  flex: 1; /* Los botones ocuparán espacio igual */
+  margin: 5px; /* Espacio entre los botones */
+}
+
+.logout-button {
+  position: absolute; /* Posiciona el botón de cerrar sesión */
+  top: 10px; /* Distancia desde la parte superior */
+  right: 10px; /* Distancia desde la derecha */
+  background-color: transparent; /* Fondo transparente */
+  border: none; /* Sin borde */
+  padding: 0; /* Sin espaciado interno */
+  color: #020092; /* Color azul para el icono */
+  font-size: 1.2em; /* Aumenta el tamaño del icono de logout */
+  outline: none; /* Sin contorno al hacer clic */
+  --box-shadow: none; /* Elimina la sombra del botón */
+  --border-radius: 0; /* Elimina el borde redondeado si hay alguno */
+  --background: transparent; /* Asegura que el fondo sea transparente */
+}
+
+.logout-button ion-icon {
+  font-size: 1.5em; /* Aumenta el tamaño del icono de logout */
+}

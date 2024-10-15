@@ -25,3 +25,28 @@
 #container a {
   text-decoration: none;
 }
+
+ion-content {
+  --background: none; /* Elimina el fondo predeterminado */
+  background-image: url('../../../assets/bg.jpg'); /* Ruta de tu imagen de fondo */
+  background-size: cover; /* Ajusta la imagen para cubrir todo el área */
+  background-position: center; /* Centra la imagen */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+  width: 100vw; /* Asegúrate de que ocupa todo el ancho de la ventana */
+  height: 100vh; /* Asegúrate de que ocupa toda la altura de la ventana */
+  padding: 0; /* Elimina el padding */
+  margin: 0; /* Elimina cualquier margen */
+  --ion-padding-start: 0; /* Elimina padding de Ionic */
+  --ion-padding-end: 0; /* Elimina padding de Ionic */
+}
+
+ion-card {
+  margin: 20px; /* Espaciado alrededor de la tarjeta */
+  background: rgba(255, 255, 255, 0.8); /* Fondo blanco semitransparente para la tarjeta */
+  border-radius: 10px; /* Bordes redondeados para la tarjeta */
+}
+
+form {
+  padding: 20px; /* Espaciado interno */
+}
+
