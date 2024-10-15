@@ -105,10 +105,33 @@ export class IncidencesPage implements OnInit {
     return await modal.present();
   }
 
-  editIncidence(incidence: Incidence) {
-    // Lógica para editar la incidencia
-    console.log('Editando incidencia:', incidence);
-    // Aquí podrías abrir un modal similar al de añadir incidencia
+  async editIncidence(incidence: Incidence) {
+    const modal = await this.modalController.create({
+      component: IncidenceModalComponent,
+      componentProps: {
+        incidence: incidence, // Pasar la incidencia a editar
+      }
+    });
+  
+    modal.onDidDismiss().then((updatedIncidence) => {
+      if (updatedIncidence.data) {
+        // Actualizar la incidencia en Firestore
+        this.firestoreService.updateDoc(updatedIncidence.data, this.path, updatedIncidence.data.id)
+          .then(() => {
+            console.log('Incidencia actualizada correctamente');
+            // Actualiza la incidencia en el estado local
+            const index = this.incidences.findIndex(i => i.id === updatedIncidence.data.id);
+            if (index > -1) {
+              this.incidences[index] = updatedIncidence.data; // Reemplazar la incidencia en el array
+            }
+          })
+          .catch((error) => {
+            console.error('Error al actualizar la incidencia:', error);
+          });
+      }
+    });
+  
+    return await modal.present();
   }
   
   async deleteIncidence(incidence: Incidence) {

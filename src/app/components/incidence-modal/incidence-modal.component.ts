@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+import { Incidence } from 'src/app/models';
 
 @Component({
   selector: 'app-incidence-modal',
@@ -15,28 +16,38 @@ export class IncidenceModalComponent implements OnInit {
   description: string = '';
   priority: number = 1; 
 
+  @Input() incidence: Incidence | null = null; // Añadir propiedad para la incidencia a editar
+
   constructor(
     private modalController: ModalController
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    // Si hay una incidencia, inicializa los campos
+    if (this.incidence) {
+      this.title = this.incidence.title;
+      this.description = this.incidence.description;
+      this.priority = this.incidence.priority;
+    }
+  }
 
   cancel() {
     this.modalController.dismiss(null, 'cancel');
   }
 
   confirm() {
-    const newIncidence = {
-      id: '', 
-      user_uid: '', 
+    const updatedIncidence = {
+      id: this.incidence ? this.incidence.id : '', 
+      user_uid: this.incidence ? this.incidence.user_uid : '', 
       title: this.title,
       description: this.description,
-      status: 'open',
-      createdAt: new Date().toDateString(),
+      status: this.incidence ? this.incidence.status : 'open',
+      createdAt: this.incidence ? this.incidence.createdAt : new Date().toDateString(),
       priority: this.priority,
+      resolvedAt: this.incidence ? this.incidence.resolvedAt : null, // Mantener el estado de resuelto si se edita
     };
 
-    this.modalController.dismiss(newIncidence, 'confirm');
+    this.modalController.dismiss(updatedIncidence, 'confirm');
   }
 
   onWillDismiss(event: Event) {

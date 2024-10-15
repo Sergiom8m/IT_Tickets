@@ -18,5 +18,5 @@ export interface Incidence{
     status: 'open' | 'resolved';
     createdAt: Date;
     resolvedAt?: Date;
-    priority: 'low' | 'medium' | 'high';
+    priority: number;
 }

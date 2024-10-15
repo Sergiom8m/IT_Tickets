@@ -6,7 +6,7 @@
 
     <ion-title>{{ user.role === 'admin' ? 'Incidencias' : 'Mis Incidencias' }}</ion-title>
 
-    <ion-buttons slot="end">
+    <ion-buttons slot="end" *ngIf="user.role === 'user'">
       <ion-button (click)="openAddIncidenceModal()">Añadir Incidencia</ion-button>
     </ion-buttons>
   </ion-toolbar>
