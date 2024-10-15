@@ -15,7 +15,7 @@ export interface Incidence{
     user_uid: string; 
     title: string;
     description: string; 
-    status: 'open' | 'in-progress' | 'resolved';
+    status: 'open' | 'resolved';
     createdAt: Date;
     resolvedAt?: Date;
     priority: 'low' | 'medium' | 'high';

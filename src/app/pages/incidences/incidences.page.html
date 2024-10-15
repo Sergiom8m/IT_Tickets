@@ -1,11 +1,10 @@
 <ion-header>
   <ion-toolbar>
-
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button> 
     </ion-buttons>
 
-    <ion-title> Mis incidencias</ion-title>
+    <ion-title>{{ user.role === 'admin' ? 'Incidencias' : 'Mis Incidencias' }}</ion-title>
 
     <ion-buttons slot="end">
       <ion-button (click)="openAddIncidenceModal()">Añadir Incidencia</ion-button>
@@ -13,13 +12,48 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-list>
-    <ion-item *ngFor="let incidence of incidences">
-      <ion-label>
-        <h2>{{ incidence.title }}</h2>
-        <p>{{ incidence.description }}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+<ion-content class="ion-padding">
+  <ion-segment [(ngModel)]="currentSegment" class="custom-segment" *ngIf="user.role === 'admin'">
+    <ion-segment-button value="active">
+      Activas
+    </ion-segment-button>
+    <ion-segment-button value="resolved">
+      Pasadas
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-card *ngFor="let incidence of filteredIncidences()" class="card-container">
+    <div style="flex: 1;">
+      <ion-card-header>
+        <ion-card-title>{{ incidence.title }}</ion-card-title>
+        <ion-card-subtitle>
+          <p>{{ incidence.description }}</p>
+        </ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="user-info">
+          <ion-icon name="person" slot="start"></ion-icon>
+          <span>{{ incidence.user_name }} ({{ incidence.user_email }})</span>
+        </div>
+        <div class="date-info">
+          <ion-icon name="calendar" slot="start"></ion-icon>
+          <span>{{ incidence.createdAt }}</span>
+        </div>
+      </ion-card-content>
+    </div>
+
+    <div class="button-container">
+      <ion-button (click)="editIncidence(incidence)" fill="clear" size="large" color="primary" style="margin-bottom: 5px;">
+        <ion-icon name="create" slot="icon-only" style="font-size: 24px;"></ion-icon>
+      </ion-button>
+      <ion-button (click)="deleteIncidence(incidence)" fill="clear" size="large" color="danger" style="margin-bottom: 5px;">
+        <ion-icon name="trash" slot="icon-only" style="font-size: 24px;"></ion-icon>
+      </ion-button>
+      <div *ngIf="user.role === 'admin'">
+        <ion-button (click)="markAsCompleted(incidence)" fill="clear" size="large" color="success">
+          <ion-icon [name]="incidence.status === 'resolved' ? 'arrow-undo' : 'checkbox'" slot="icon-only" style="font-size: 24px;"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  </ion-card>
 </ion-content>

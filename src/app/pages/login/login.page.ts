@@ -77,89 +77,89 @@ export class LoginPage {
   }
 
   async register() {
-
     await this.showLoading();
-
+  
     const isValid = await this.validateUserInput('register');
-    if (!isValid) return;
-
+    if (!isValid) {
+      this.loading.dismiss(); // Cerrar loading si falla la validación
+      return;
+    }
+  
     this.firebaseAuthService.register(this.actualUser.email, this.actualUser.password).then(res => {
       if (res.user) {
-        // Obtener el uid del usuario registrado
         const uid = res.user.uid; 
-
-        // Asignar el uid al usuario  
         this.actualUser.uid = uid;
-
-        // Crear un documento en Firestore con el uid del usuario
+  
         this.firestoreService.createDoc(this.actualUser, this.path, uid).then(() => {
           console.log('Usuario registrado correctamente');
           this.initUser(); // Limpiar campos después de registrar
-          this.loading.dismiss();
+          this.loading.dismiss(); // Asegurarse de cerrar el loading en éxito
           this.router.navigate(['/home']); 
+        }).catch(error => {
+          this.loading.dismiss(); // Cerrar loading si hay error al crear el documento
+          console.error('Error al crear el documento del usuario:', error);
+          this.showToast('Error al registrar el usuario.');
         });
       }
     }).catch(error => {
-      // Verificar si el error es de "correo ya en uso"
+      this.loading.dismiss(); // Cerrar loading si hay error al registrar
       if (error.code === 'auth/email-already-in-use') {
         this.showToast('El correo electrónico ya está en uso por otra cuenta.');
       } else {
         this.showToast('Error al registrar el usuario.');
       }
-      this.loading.dismiss();
     });
   }
-
   async login() {
-
     await this.showLoading();
-
+  
     const isValid = await this.validateUserInput('login');
-    if (!isValid) return;
-
+    if (!isValid) {
+      this.loading.dismiss(); // Cerrar loading si falla la validación
+      return;
+    }
+  
     this.firebaseAuthService.login(this.actualUser.email, this.actualUser.password).then(res => {
       if (res.user) {
         this.initUser(); // Limpiar campos después de iniciar sesión
-        this.loading.dismiss();
+        this.loading.dismiss(); // Asegurarse de cerrar el loading en éxito
         this.router.navigate(['/home']);
       }
     }).catch(error => {
+      this.loading.dismiss(); // Cerrar loading si hay error al iniciar sesión
       console.error('Error al iniciar sesión:', error);
-      this.loading.dismiss();
       this.showToast('Error al iniciar sesión.');
     });
   }
 
   // Función para realizar todas las validaciones de los formularios
   async validateUserInput(action: 'register' | 'login') {
-    if (!this.actualUser.email || !this.actualUser.password || (action === 'register' && !this.actualUser.name) || 
+    if (!this.actualUser.email || !this.actualUser.password || 
+        (action === 'register' && !this.actualUser.name) || 
         (action === 'register' && !this.actualUser.telephone) || 
         (action === 'register' && !this.actualUser.code) || 
         (action === 'register' && !this.actualUser.department)) {
       await this.showToast('Todos los campos son obligatorios.');
       return false;
     }
-
-    // Validar el formato del email
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular para validar el email
+  
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(this.actualUser.email)) {
       await this.showToast('Formato de email no válido.');
       return false;
     }
-
-    // Validar que las contraseñas coincidan
+  
     if (action === 'register' && this.actualUser.password !== this.actualUser.confirmPassword) {
       await this.showToast('Las contraseñas no coinciden.');
       return false;
     }
-
-    // Validar la longitud de la contraseña 
+  
     if (this.actualUser.password.length < 6) {
       await this.showToast('La contraseña debe tener al menos 6 caracteres.');
       return false;
     }
-
-    return true; // Todas las validaciones pasadas
+  
+    return true;
   }
 
   async showToast(msg: string) {

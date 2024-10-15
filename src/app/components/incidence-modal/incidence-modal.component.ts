@@ -32,7 +32,7 @@ export class IncidenceModalComponent implements OnInit {
       title: this.title,
       description: this.description,
       status: 'open',
-      createdAt: new Date(),
+      createdAt: new Date().toDateString(),
       priority: this.priority,
     };
 
