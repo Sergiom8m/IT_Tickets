@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 
-import { User } from '../models';
-import { AuthService } from '../services/auth.service';
-import { FirestoreService } from '../services/firestore.service';
+import { User } from '../../models';
+import { AuthService } from '../../services/auth.service';
+import { FirestoreService } from '../../services/firestore.service';
 import { LoadingController, ToastController } from '@ionic/angular';
 
 @Component({
@@ -95,7 +95,8 @@ export class LoginPage {
         this.firestoreService.createDoc(this.actualUser, this.path, uid).then(() => {
           console.log('Usuario registrado correctamente');
           this.initUser(); // Limpiar campos después de registrar
-          this.loading.dismiss(); 
+          this.loading.dismiss();
+          this.router.navigate(['/home']); 
         });
       }
     }).catch(error => {
@@ -120,17 +121,12 @@ export class LoginPage {
       if (res.user) {
         this.initUser(); // Limpiar campos después de iniciar sesión
         this.loading.dismiss();
+        this.router.navigate(['/home']);
       }
     }).catch(error => {
+      console.error('Error al iniciar sesión:', error);
       this.loading.dismiss();
-    });
-  }
-
-  logout() {
-    this.firebaseAuthService.logout().then(() => {
-      this.initUser(); // Limpiar campos al cerrar sesión
-    }).catch(error => {
-      console.error('Error al cerrar sesión:', error);
+      this.showToast('Error al iniciar sesión.');
     });
   }
 
