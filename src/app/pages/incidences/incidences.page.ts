@@ -74,6 +74,19 @@ export class IncidencesPage implements OnInit {
     }
   }
 
+  orderedIncidences() {
+    // Ordenar las incidencias por prioridad y fecha de creación
+    return this.filteredIncidences().sort((a, b) => {
+      if (a.priority < b.priority) {
+        return 1;
+      } else if (a.priority > b.priority) {
+        return -1;
+      } else {
+        return a.createdAt > b.createdAt ? 1 : -1;
+      }
+    });
+  }
+
   async openAddIncidenceModal() {
     const modal = await this.modalController.create({
       component: IncidenceModalComponent,
