@@ -1,4 +1,4 @@
-ion-content {
+  ion-content {
     background: url('/assets/bg.jpg') no-repeat center center fixed; /* Ajusta la ruta a tu imagen */
     background-size: cover; /* Para que la imagen cubra todo el fondo */
     --background: transparent; /* Asegúrate de que el fondo sea transparente para que se vea la imagen */
@@ -8,6 +8,11 @@ ion-content {
   ion-card {
     background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco con menos transparencia */
     margin: 10px; /* Margen para separar las tarjetas */
+  }
+
+  ion-card-title {
+    display: flex; 
+    align-items: center;
   }
    
   ion-icon {
@@ -20,49 +25,55 @@ ion-content {
     --ion-item-background: transparent; /* Fondo transparente para los items */
   }
 
-    .card-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px; /* Espaciado entre las tarjetas */
-    }
+  .card-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px; /* Espaciado entre las tarjetas */
+  }
 
-    .card-details {
-    flex: 1;
-    }
+  .card-details {
+  flex: 1;
+  }
 
-    .user-info {
-    display: flex;
-    align-items: center;
-    margin-bottom: 5px;
-    }
+  .user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  }
 
-    .date-info {
-    display: flex;
-    align-items: center;
-    }
+  .date-info {
+  display: flex;
+  align-items: center;
+  }
 
-    .button-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-left: 10px;
-    margin-right: 10px;
-    }
+  .button-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 10px;
+  margin-right: 10px;
+  }
 
-    .button-container ion-button {
-    margin-bottom: 5px;
-    font-size: 24px; 
-    }
+  .button-container ion-button {
+  margin-bottom: 5px;
+  font-size: 24px; 
+  }
 
-    .custom-segment {
-        --background: #f8f8f8; /* Fondo claro */
-        --color-checked: #3880ff; /* Color cuando está seleccionado */
-        --color-checked-active: #007aff; /* Color activo */
-        --color: #000; /* Color de texto */
-        --color-activated: #3880ff; /* Color del texto activo */
-        margin: 0; /* Eliminar margen superior e inferior */
-        border-radius: 8px; /* Bordes redondeados */
-      }
+  .custom-segment {
+    --background: #f8f8f8; /* Fondo claro */
+    --color-checked: #3880ff; /* Color cuando está seleccionado */
+    --color-checked-active: #007aff; /* Color activo */
+    --color: #000; /* Color de texto */
+    --color-activated: #3880ff; /* Color del texto activo */
+    margin: 0; /* Eliminar margen superior e inferior */
+    border-radius: 8px; /* Bordes redondeados */
+  }
+
+  .icono_prior {
+    font-size: 20px;
+    margin-left: 8px;
+  }
+
 
     
