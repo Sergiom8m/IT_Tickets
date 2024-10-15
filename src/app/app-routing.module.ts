@@ -17,6 +17,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule),
     canActivate: [authGuard]
   },
+  {
+    path: 'incidences',
+    loadChildren: () => import('./pages/incidences/incidences.module').then( m => m.IncidencesPageModule)
+  },
+  {
+    path: 'vehicles',
+    loadChildren: () => import('./pages/vehicles/vehicles.module').then( m => m.VehiclesPageModule)
+  },
 ];
 
 @NgModule({

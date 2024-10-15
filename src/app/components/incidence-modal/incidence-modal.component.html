@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Añadir Incidencia</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label position="floating">Título</ion-label>
+    <ion-input [(ngModel)]="title"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Descripción</ion-label>
+    <ion-textarea [(ngModel)]="description" auto-grow="true"></ion-textarea>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Prioridad</ion-label>
+    <ion-range
+      min="1"
+      max="3"
+      step="1"
+      snaps="true"
+      ticks="true"
+      [(ngModel)]="priority"
+    >
+      <ion-label slot="start">Baja</ion-label>
+      <ion-label slot="end">Alta</ion-label>
+      <ion-label slot="mid">Media</ion-label>
+    </ion-range>
+  </ion-item>
+
+  <ion-button expand="full" (click)="confirm()">Añadir Incidencia</ion-button>
+</ion-content>

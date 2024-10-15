@@ -39,4 +39,12 @@ export class HomePage implements OnInit {
       console.error('Error al cerrar sesión:', error);
     });
   }
+
+  goToIncidences() {
+    this.router.navigate(['/incidencias']);
+  }
+
+  goToVehicles() {
+    this.router.navigate(['/vehiculos']);
+  }
 }

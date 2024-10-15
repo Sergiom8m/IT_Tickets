@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button> 
+    </ion-buttons>
+
+    <ion-title> Mis incidencias</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="openAddIncidenceModal()">Añadir Incidencia</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let incidence of incidences">
+      <ion-label>
+        <h2>{{ incidence.title }}</h2>
+        <p>{{ incidence.description }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

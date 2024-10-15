@@ -1,0 +1,21 @@
+/* Solo aplica bordes redondeados en vista de navegador (desktop) */
+@media (min-width: 768px) {
+    ion-modal {
+      --border-radius: 20px; /* Ajusta el valor a lo que necesites */
+      --width: 80%; /* Ajusta el ancho si quieres un tamaño menor */
+      --height: 80%; /* Ajusta la altura si lo necesitas */
+    }
+  }
+
+  ion-range {
+    --color-selected: var(--ion-color-primary);
+    --color-tick: #333;
+    --color-tick-active: #fff;
+    --tick-size: 10px;
+  
+    ion-label {
+      font-size: 14px;
+      color: #333;
+    }
+  }
+  

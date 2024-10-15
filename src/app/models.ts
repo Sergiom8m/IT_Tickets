@@ -10,7 +10,7 @@ export interface User {
     role: 'admin' | 'user';
 }
 
-export interface Ticket{
+export interface Incidence{
     id: string; 
     user_uid: string; 
     title: string;

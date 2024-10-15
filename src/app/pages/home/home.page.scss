@@ -8,6 +8,10 @@ ion-content {
   height: 100vh; /* Asegúrate de que ocupa toda la altura de la ventana */
 }
 
+ion-card-header {
+  margin-bottom: 20px;
+}
+
 .card-container {
   display: flex;
   justify-content: center; /* Centra horizontalmente */
@@ -37,11 +41,11 @@ ion-content {
 
 .user-name {
   font-weight: bold;
-  font-size: 1.2em; /* Tamaño del texto del nombre */
+  font-size: 1.5em; /* Tamaño del texto del nombre */
 }
 
 .user-email {
-  color: gray; /* Color gris para el email */
+  color: rgb(138, 138, 138); /* Color gris para el email */
   font-size: 0.9em; /* Tamaño del texto del email */
 }
 
