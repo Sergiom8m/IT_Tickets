@@ -1,0 +1,93 @@
+.custom-background {
+    --background: none; /* Elimina el fondo predeterminado */
+    background-image: url('../../../assets/bg.jpg'); /* Ruta de tu imagen de fondo */
+    background-size: cover; /* Ajusta la imagen para cubrir todo el área */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    width: 100vw; /* Asegúrate de que ocupa todo el ancho de la ventana */
+    height: 100vh; /* Asegúrate de que ocupa toda la altura de la ventana */
+    padding: 0; /* Elimina el padding */
+    margin: 0; /* Elimina cualquier margen */
+    --ion-padding-start: 0; /* Elimina padding de Ionic */
+    --ion-padding-end: 0; /* Elimina padding de Ionic */
+  }
+  
+  .vehicle-card {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9); /* Fondo blanco con 80% de opacidad */
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px; /* Añadir espacio alrededor de la tarjeta */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .vehicle-image {
+    width: 150px; /* Ajustar el tamaño de la imagen */
+    height: auto;
+    border-radius: 8px;
+    margin-right: 16px; /* Espacio entre la imagen y los detalles */
+  }
+  
+  .vehicle-details {
+    flex: 1; /* Permitir que los detalles ocupen el espacio restante */
+  }
+  
+  .icons-container {
+    margin-top: 8px; /* Espacio entre el texto y los íconos */
+    display: flex; /* Utilizar flexbox para alinear los íconos */
+    gap: 12px; /* Espacio entre los íconos */
+  }
+  
+  .icon-active {
+    color: green; /* Color para el ícono activo */
+  }
+  
+  .icon-inactive {
+    color: gray; /* Color para el ícono inactivo */
+  }
+  
+  .icon-red {
+    color: red; /* Color para el ícono de combustible */
+  }
+  
+  .icon-yellow {
+    color: yellow; /* Color para el ícono de reparación */
+  }
+  
+  .reservation-form {
+    background: rgba(255, 255, 255, 0.8); /* Fondo blanco con 80% de opacidad */
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 16px; /* Espacio encima del formulario */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .reservation-form-container {
+    display: flex; /* Utilizar flexbox para centrar */
+    flex-direction: column; /* Apilar los elementos en una columna */
+    align-items: center; /* Centrar los elementos horizontalmente */
+    justify-content: center; /* Centrar los elementos verticalmente */
+  }
+  
+  .date-picker-container {
+    display: flex; /* Utiliza flexbox para alinear en fila */
+    justify-content: space-between; /* Espacio entre los elementos */
+    margin-bottom: 16px; /* Espacio debajo de la fila de calendarios */
+  }
+  
+  .date-picker-container ion-item {
+    flex: 1; /* Permitir que cada item ocupe el mismo espacio */
+    margin-right: 8px; /* Espacio entre los dos calendarios */
+  }
+  
+  .date-picker-container ion-item:last-child {
+    margin-right: 0; /* Sin margen derecho en el último item */
+  }
+  
+  /* Asegúrate de que el ion-item ocupe el tamaño necesario */
+  ion-item {
+    flex: 1; /* Asegúrate de que los ion-item se expandan para ocupar el espacio */
+    min-width: 120px; /* Un ancho mínimo para que no sean demasiado estrechos */
+  }
+  

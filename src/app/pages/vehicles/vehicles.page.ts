@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Vehicle } from 'src/app/models';
+import { FirestoreService } from 'src/app/services/firestore.service';
 
 @Component({
   selector: 'app-vehicles',
@@ -8,40 +10,26 @@ import { Vehicle } from 'src/app/models';
 })
 export class VehiclesPage implements OnInit {
 
-  vehicles: Vehicle[] = [
-    {
-      model: 'Toyota Prius',
-      licensePlate: '0021-FSB',
-      isFourByFour: false,
-      needsFuel: false,
-      needsRepair: true
-    },
-    {
-      model: 'Land Rover',
-      licensePlate: '1534-LYS',
-      isFourByFour: true,
-      needsFuel: true,
-      needsRepair: false
-    },
-    {
-      model: 'Ford Explorer',
-      licensePlate: '4298-LNN',
-      isFourByFour: false,
-      needsFuel: false,
-      needsRepair: false
-    },
-    {
-      model: 'Jeep Wrangler',
-      licensePlate: '8822-MLJ',
-      isFourByFour: true,
-      needsFuel: false,
-      needsRepair: true
-    },
-  ];
+  vehicles: any[] = []; 
+  path = "Vehiculos/"
 
-  constructor() { }
+  constructor(
+    private firestoreService: FirestoreService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
+    this.loadVehicles();
+  }
+
+  loadVehicles() {
+    this.firestoreService.getCollection<Vehicle>(this.path).subscribe(vehicles => {
+      this.vehicles = vehicles;
+    });
+  }
+
+  goToReservation(vehicleId: string) {
+    this.router.navigate(['/reservation'], { queryParams: { id: vehicleId } });
   }
 
 }

@@ -28,3 +28,13 @@ export interface Vehicle {
     needsFuel: boolean;
     needsRepair: boolean;
   }
+
+  export interface Reservation {
+    id: string; 
+    vehicleId: string; 
+    userId: string; 
+    startDate: Date; 
+    endDate: Date; 
+    estimatedKm: number; 
+    projectCode: string; 
+  }
