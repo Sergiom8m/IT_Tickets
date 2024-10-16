@@ -1,85 +1,91 @@
-  /* Fondo personalizado con imagen */
-  ion-content {
-    --background: none;
-    background-image: url('../../../assets/bg.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    width: 100vw;
-    height: 100vh;
-  }
+/* Fondo personalizado con imagen */
+ion-content {
+  --background: none;
+  background-image: url('../../../assets/bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+}
 
-  ion-button {
-    margin-top: 10px; /* Espaciado superior */
-  }
-  
-  /* Centrar el contenido de las tarjetas */
-  .vehicle-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    border-radius: 15px;
-    overflow: hidden;
-    background: rgba(255, 255, 255, 0.9); /* Fondo blanco con 80% de opacidad */
-    position: relative;
-  }
-  
-  .vehicle-card img {
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    width: 100%;
-    object-fit: cover;
-  }
-  
-  ion-card-title, 
-  ion-card-content p {
-    text-align: center;
-  }
-  
-  /* Contenedor de los iconos */
-  .icon-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-  }
-  
-  /* Estilo de los iconos */
-  .icons-container i {
-    font-size: 24px;
-    margin: 0 10px;
-  }
-  
-  /* Estado activo para 4x4 */
-  .icon-active {
-    color: green;
-  }
-  
-  /* Estado inactivo */
-  .icon-inactive {
-    color: grey;
-  }
-  
-  /* Estado de gasolina baja (repostar) */
-  .icon-red {
-    color: red;
-  }
-  
-  /* Estado de avería */
-  .icon-yellow {
-    color: yellow;
-  }
+ion-button {
+  margin-top: 10px; /* Espaciado superior */
+}
 
-  .edit-icon-container {
-    position: absolute; /* Posición absoluta para colocar el ícono en la esquina superior derecha */
-    top: 10px; /* Ajusta la distancia desde la parte superior */
-    right: 10px; /* Ajusta la distancia desde la derecha */
-  }
+/* Centrar el contenido de las tarjetas */
+.vehicle-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-radius: 15px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.9); /* Fondo blanco con 80% de opacidad */
+  position: relative;
+  width: 100%; /* Ajustar al 100% del contenedor */
+  max-width: 400px; /* Máximo ancho de la tarjeta */
+  margin: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para darle efecto de elevación */
+}
 
-  .edit-button {
-    color: grey;
-    font-size: 18px; 
-  }
-  
+/* Mantener el tamaño fijo y proporciones de la imagen */
+.vehicle-card img {
+  width: 100%;
+  height: 200px; /* Altura fija */
+  object-fit: contain; /* Mantener las proporciones de la imagen */
+  background-color: #f1f1f1; /* Fondo gris claro por si la imagen tiene bordes vacíos */
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
 
- 
+ion-card-title,
+ion-card-content p {
+  text-align: center;
+}
+
+/* Contenedor de los iconos */
+.icon-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* Estilo de los iconos */
+.icons-container i {
+  font-size: 24px;
+  margin: 0 10px;
+}
+
+/* Estado activo para 4x4 */
+.icon-active {
+  color: green;
+}
+
+/* Estado inactivo */
+.icon-inactive {
+  color: grey;
+}
+
+/* Estado de gasolina baja (repostar) */
+.icon-red {
+  color: red;
+}
+
+/* Estado de avería */
+.icon-yellow {
+  color: yellow;
+}
+
+/* Contenedor del ícono de editar */
+.edit-icon-container {
+  position: absolute; /* Posición absoluta para colocar el ícono en la esquina superior derecha */
+  top: 10px; /* Ajusta la distancia desde la parte superior */
+  right: 10px; /* Ajusta la distancia desde la derecha */
+}
+
+/* Estilo del botón de editar */
+.edit-button {
+  color: grey;
+  font-size: 18px;
+}
