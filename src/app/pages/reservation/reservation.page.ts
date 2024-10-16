@@ -70,6 +70,7 @@ export class ReservationPage implements OnInit {
   reserveVehicle() {
     this.reservation.id = this.firestoreService.getId();
     this.reservation.userId = this.user.uid;
+    this.reservation.vehicleId = this.vehicle.licensePlate;
 
     // Verificar si hay reservas que coinciden con el mismo vehículo
     this.reservationSubscription = this.firestoreService.getCollection<Reservation>(this.path).subscribe(reservations => {
