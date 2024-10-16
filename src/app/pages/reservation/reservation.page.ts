@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoadingController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { Reservation, User, Vehicle } from 'src/app/models';
 import { AuthService } from 'src/app/services/auth.service';
@@ -12,7 +13,7 @@ import { FirestoreService } from 'src/app/services/firestore.service';
 })
 export class ReservationPage implements OnInit {
 
-  path = "Reservas/"
+  path = "Reservas/";
 
   user: User = {} as User;
   vehicle: Vehicle  = {} as Vehicle;
@@ -21,22 +22,26 @@ export class ReservationPage implements OnInit {
     id: '',
     vehicleId: '', // Esto debería ser pasado desde la tarjeta del vehículo
     userId: '', // Debes obtener el ID del usuario actual
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: new Date().toISOString(),
+    endDate: new Date().toISOString(),
     estimatedKm: 0,
     projectCode: '',
   };
 
   private reservationSubscription: Subscription | null = null;
+  loading: any;
 
   constructor(
     private firestoreService: FirestoreService,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private loadingController: LoadingController,
+    private toastController: ToastController
   ) { }
 
   ngOnInit() {
+    console.log(this.reservation.startDate);
     // Obtener el UID del usuario que ha iniciado sesión
     this.authService.stateAuth().subscribe(res => {
       if (res !== null) {
@@ -58,6 +63,7 @@ export class ReservationPage implements OnInit {
         });
       }
     });
+    
   }
 
   ngOnDestroy() {
@@ -68,43 +74,50 @@ export class ReservationPage implements OnInit {
   }
 
   reserveVehicle() {
+    // Validar que todos los campos estén completos y que los kilómetros no sean cero
+    if (!this.reservation.startDate || !this.reservation.endDate || !this.reservation.estimatedKm || this.reservation.estimatedKm <= 0) {
+      this.showToast('Por favor completa todos los campos y asegúrate de que los kilómetros sean mayores que 0.');
+      return;
+    }
+
+    this.showLoading();
+
     this.reservation.id = this.firestoreService.getId();
     this.reservation.userId = this.user.uid;
     this.reservation.vehicleId = this.vehicle.licensePlate;
 
-    // Verificar si hay reservas que coinciden con el mismo vehículo
-    this.reservationSubscription = this.firestoreService.getCollection<Reservation>(this.path).subscribe(reservations => {
-      const conflictingReservations = reservations.filter(reservation =>
-        reservation.vehicleId === this.reservation.vehicleId &&
-        this.datesOverlap(new Date(reservation.startDate), new Date(reservation.endDate),
-          new Date(this.reservation.startDate), new Date(this.reservation.endDate))
-      );
+    this.firestoreService.createDoc(this.reservation, this.path, this.reservation.id)
+      .then(() => {
+        this.router.navigate(['/vehicles']); // Navegación al menú de vehículos
+        this.showToast('Reserva creada correctamente');
+        this.loading.dismiss();
+      })
+      .catch(error => {
+        console.error('Error creando la reserva:', error);
+        this.showToast('Error creando la reserva');
+        this.loading.dismiss();
+      });
+  }
 
-      if (conflictingReservations.length > 0) {
-        const maxKmReservation = conflictingReservations.reduce((prev, current) => {
-          return (prev.estimatedKm > current.estimatedKm) ? prev : current;
-        });
-
-        conflictingReservations.forEach(conflict => {
-          if (conflict.id !== maxKmReservation.id) {
-            this.firestoreService.deleteDoc(this.path, conflict.id);
-          }
-        });
-      }
-
-      // Crear la nueva reserva
-      this.firestoreService.createDoc(this.reservation, this.path, this.reservation.id)
-        .then(() => {
-          console.log('Reserva creada con éxito');
-          this.router.navigate(['/vehicles']); // Navegación al menú de vehículos
-        })
-        .catch(error => {
-          console.error('Error creando la reserva:', error);
-        });
+  async showToast(msg: string) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000,
+      color: 'light'
     });
+    toast.present();
   }
 
-  private datesOverlap(startDate1: Date, endDate1: Date, startDate2: Date, endDate2: Date): boolean {
-    return startDate1 < endDate2 && startDate2 < endDate1;
+  async showLoading() {
+    this.loading = await this.loadingController.create({
+      cssClass: 'normal',
+      message: 'Procesando, por favor espere...',
+    });
+    await this.loading.present();
   }
+
+  private formatDate(date: Date): string {
+    return date.toISOString().slice(0, 16); // Devuelve la cadena en formato ISO (YYYY-MM-DDTHH:mm)
+  }
+  
 }

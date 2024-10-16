@@ -33,8 +33,8 @@ export interface Vehicle {
     id: string; 
     vehicleId: string; 
     userId: string; 
-    startDate: Date; 
-    endDate: Date; 
+    startDate: string; 
+    endDate: string; 
     estimatedKm: number; 
     projectCode: string; 
   }
