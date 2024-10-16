@@ -20,7 +20,7 @@
               <i class="fa-solid fa-pen-to-square"></i>
             </ion-button>
           </div>
-          <img src="../../../assets/dacia.png" alt="Vehicle 1">
+          <img [src]="getVehicleImage(vehicle.model)" alt="Vehicle">
           <div class="icons-container">
             <i class="fa-solid fa-truck-monster" [ngClass]="vehicle.isFourByFour ? 'icon-active' : 'icon-inactive'"></i>
             <i class="fa-solid fa-gas-pump" [ngClass]="vehicle.needsFuel ? 'icon-red' : 'icon-inactive'"></i>

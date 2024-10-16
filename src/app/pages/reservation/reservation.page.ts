@@ -119,5 +119,10 @@ export class ReservationPage implements OnInit {
   private formatDate(date: Date): string {
     return date.toISOString().slice(0, 16); // Devuelve la cadena en formato ISO (YYYY-MM-DDTHH:mm)
   }
+
+  getVehicleImage(model: string): string {
+    const imageName = model.toLowerCase().replace(/\s+/g, '_'); // Convierte "Dacia Duster" a "dacia_duster"
+    return `../../../assets/${imageName}.png`; // Asumiendo que la imagen sigue el patrón [nombre].png
+  }
   
 }

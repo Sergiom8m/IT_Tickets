@@ -91,4 +91,10 @@ export class VehiclesPage implements OnInit {
       });
   }
 
+  getVehicleImage(model: string): string {
+    // Extraer la parte del modelo que se usará para identificar la imagen
+    const imageName = model.toLowerCase().replace(/\s+/g, '_'); // Convierte "Dacia Duster" a "dacia_duster"
+    return `../../../assets/${imageName}.png`; // Asumiendo que la imagen sigue el patrón [nombre].png
+  }
+
 }

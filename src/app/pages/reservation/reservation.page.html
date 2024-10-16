@@ -9,7 +9,7 @@
 
 <ion-content class="custom-background">
   <div class="vehicle-card">
-    <img src="../../../assets/dacia.png" alt="Vehicle Image" class="vehicle-image" />
+    <img [src]="getVehicleImage(vehicle.model)" alt="Vehicle Image" class="vehicle-image" />
     <div class="vehicle-details">
       <h2>{{ vehicle.model }}</h2>
       <p>{{ vehicle.licensePlate }}</p>
