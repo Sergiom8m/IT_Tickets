@@ -29,7 +29,7 @@ export class VehiclesPage implements OnInit {
   }
 
   goToReservation(vehicleId: string) {
-    this.router.navigate(['/reservation'], { queryParams: { id: vehicleId } });
+    this.router.navigate(['/reservation'], { queryParams: { vehicle_id: vehicleId } });
   }
 
 }

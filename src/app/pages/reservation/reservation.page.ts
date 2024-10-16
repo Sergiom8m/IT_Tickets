@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Reservation, User, Vehicle } from 'src/app/models';
 import { AuthService } from 'src/app/services/auth.service';
 import { FirestoreService } from 'src/app/services/firestore.service';
@@ -26,10 +27,13 @@ export class ReservationPage implements OnInit {
     projectCode: '',
   };
 
+  private reservationSubscription: Subscription | null = null;
+
   constructor(
     private firestoreService: FirestoreService,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -46,30 +50,60 @@ export class ReservationPage implements OnInit {
   
     // Obtener el vehicleId de los parámetros de consulta
     this.route.queryParams.subscribe(params => {
-      const vehicleId = params['id'];
+      const vehicleId = params['vehicle_id'];
       if (vehicleId) {
         // Ahora que tienes el ID, obtén los datos del vehículo
         this.firestoreService.getDoc<Vehicle>('Vehiculos/', vehicleId).subscribe(vehicleData => {
           this.vehicle = vehicleData as Vehicle;
-          console.log(this.vehicle); // Verifica que estás recibiendo el vehículo correcto
         });
       }
     });
   }
 
-  reserveVehicle() {
-    this.reservation.id = this.firestoreService.getId(); // Generar un ID único
-    this.reservation.userId = this.user.uid; // Asignar el ID del usuario
-    console.log(this.reservation)
-    this.firestoreService.createDoc(this.reservation, this.path, this.reservation.id)
-      .then(() => {
-        console.log('Reserva creada con éxito');
-      })
-      .catch(error => {
-        console.error('Error creando la reserva:', error);
-      });
+  ngOnDestroy() {
+    // Desuscribirse para evitar fugas de memoria
+    if (this.reservationSubscription) {
+      this.reservationSubscription.unsubscribe();
+    }
   }
 
-  
+  reserveVehicle() {
+    this.reservation.id = this.firestoreService.getId();
+    this.reservation.userId = this.user.uid;
 
+    // Verificar si hay reservas que coinciden con el mismo vehículo
+    this.reservationSubscription = this.firestoreService.getCollection<Reservation>(this.path).subscribe(reservations => {
+      const conflictingReservations = reservations.filter(reservation =>
+        reservation.vehicleId === this.reservation.vehicleId &&
+        this.datesOverlap(new Date(reservation.startDate), new Date(reservation.endDate),
+          new Date(this.reservation.startDate), new Date(this.reservation.endDate))
+      );
+
+      if (conflictingReservations.length > 0) {
+        const maxKmReservation = conflictingReservations.reduce((prev, current) => {
+          return (prev.estimatedKm > current.estimatedKm) ? prev : current;
+        });
+
+        conflictingReservations.forEach(conflict => {
+          if (conflict.id !== maxKmReservation.id) {
+            this.firestoreService.deleteDoc(this.path, conflict.id);
+          }
+        });
+      }
+
+      // Crear la nueva reserva
+      this.firestoreService.createDoc(this.reservation, this.path, this.reservation.id)
+        .then(() => {
+          console.log('Reserva creada con éxito');
+          this.router.navigate(['/vehicles']); // Navegación al menú de vehículos
+        })
+        .catch(error => {
+          console.error('Error creando la reserva:', error);
+        });
+    });
+  }
+
+  private datesOverlap(startDate1: Date, endDate1: Date, startDate2: Date, endDate2: Date): boolean {
+    return startDate1 < endDate2 && startDate2 < endDate1;
+  }
 }
