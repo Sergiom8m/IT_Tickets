@@ -1,5 +1,5 @@
-/* Fondo personalizado con imagen */
-ion-content {
+  /* Fondo personalizado con imagen */
+  ion-content {
     --background: none;
     background-image: url('../../../assets/bg.jpg');
     background-size: cover;
@@ -7,6 +7,10 @@ ion-content {
     background-repeat: no-repeat;
     width: 100vw;
     height: 100vh;
+  }
+
+  ion-button {
+    margin-top: 10px; /* Espaciado superior */
   }
   
   /* Centrar el contenido de las tarjetas */
@@ -18,6 +22,7 @@ ion-content {
     border-radius: 15px;
     overflow: hidden;
     background: rgba(255, 255, 255, 0.9); /* Fondo blanco con 80% de opacidad */
+    position: relative;
   }
   
   .vehicle-card img {
@@ -40,23 +45,6 @@ ion-content {
   }
   
   /* Estilo de los iconos */
-  .vehicle-icon {
-    font-size: 24px;
-    margin: 0 10px;
-  }
-  
-  /* Ajustar el tamaño de la imagen */
-  ion-card img {
-    max-width: 100%;
-    height: auto;
-  }
-
-  .icons-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-  }
-  
   .icons-container i {
     font-size: 24px;
     margin: 0 10px;
@@ -81,5 +69,17 @@ ion-content {
   .icon-yellow {
     color: yellow;
   }
+
+  .edit-icon-container {
+    position: absolute; /* Posición absoluta para colocar el ícono en la esquina superior derecha */
+    top: 10px; /* Ajusta la distancia desde la parte superior */
+    right: 10px; /* Ajusta la distancia desde la derecha */
+  }
+
+  .edit-button {
+    color: grey;
+    font-size: 18px; 
+  }
   
-  
+
+ 

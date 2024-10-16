@@ -15,18 +15,22 @@
     <ion-row>
       <ion-col size="6" size-md="4" *ngFor="let vehicle of vehicles">
         <ion-card class="vehicle-card" (click)="goToReservation(vehicle.licensePlate)">
+          <div class="edit-icon-container">
+            <ion-button fill="clear" (click)="editVehicle(vehicle); $event.stopPropagation()" class="edit-button">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </ion-button>
+          </div>
           <img src="../../../assets/dacia.png" alt="Vehicle 1">
-          <!-- Iconos con ngClass para cambiar el color según el estado -->
           <div class="icons-container">
             <i class="fa-solid fa-truck-monster" [ngClass]="vehicle.isFourByFour ? 'icon-active' : 'icon-inactive'"></i>
             <i class="fa-solid fa-gas-pump" [ngClass]="vehicle.needsFuel ? 'icon-red' : 'icon-inactive'"></i>
-            <i class="fa-solid fa-wrench" [ngClass]="vehicle.needsRepair ? 'icon-yellow' : 'icon-inactive'"></i>
+            <i class="fa-solid fa-wrench" [ngClass]="vehicle.needsRepair ? 'icon-red' : 'icon-inactive'"></i>
           </div>
           <ion-card-header>
-            <ion-card-title> {{ vehicle.model }} </ion-card-title>
+            <ion-card-title>{{ vehicle.model }}</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <p> {{ vehicle.licensePlate }} </p>
+            <p>{{ vehicle.licensePlate }}</p>
           </ion-card-content>
         </ion-card>
       </ion-col>
