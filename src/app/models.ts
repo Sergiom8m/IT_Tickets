@@ -20,3 +20,11 @@ export interface Incidence{
     resolvedAt?: Date;
     priority: number;
 }
+
+export interface Vehicle {
+    model: string;
+    licensePlate: string;
+    isFourByFour: boolean;
+    needsFuel: boolean;
+    needsRepair: boolean;
+  }

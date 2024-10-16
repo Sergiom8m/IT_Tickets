@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 
 import { User } from '../../models';
@@ -33,7 +32,6 @@ export class LoginPage {
 
 
   constructor(
-    private afAuth: AngularFireAuth, 
     private router: Router,
     public firebaseAuthService: AuthService,
     public firestoreService: FirestoreService,
@@ -42,11 +40,8 @@ export class LoginPage {
   ) {
     // Cuando se inicia la página, se comprueba si el user está logeado (subscribirse para estar al tanto de los cambios)
     this.firebaseAuthService.stateAuth().subscribe( res => {
-      if (res !== null) {
-        // Si la respuesta no es nula, se obtiene el uid del user
-        const uid = res.uid;
-      }
-      else {
+      if (res === null) {
+        // Si la respuesta es nula, se obtiene el inicializa el user
         this.initUser();
       }
     });

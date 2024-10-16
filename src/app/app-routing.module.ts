@@ -19,11 +19,13 @@ const routes: Routes = [
   },
   {
     path: 'incidences',
-    loadChildren: () => import('./pages/incidences/incidences.module').then( m => m.IncidencesPageModule)
+    loadChildren: () => import('./pages/incidences/incidences.module').then( m => m.IncidencesPageModule),
+    canActivate: [authGuard]
   },
   {
     path: 'vehicles',
-    loadChildren: () => import('./pages/vehicles/vehicles.module').then( m => m.VehiclesPageModule)
+    loadChildren: () => import('./pages/vehicles/vehicles.module').then( m => m.VehiclesPageModule),
+    canActivate: [authGuard]
   },
 ];
 
