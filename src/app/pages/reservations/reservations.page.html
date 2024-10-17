@@ -1,16 +1,24 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-    <ion-back-button defaultHref="/home"></ion-back-button>
-    </ion-buttons>
     <ion-title>Reservas</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/vehicles"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">reservations</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="reservations-background">
+  <div class="date-card">
+    <ion-button (click)="previousDay()" fill="clear">
+      <ion-icon name="chevron-back-outline"></ion-icon>
+    </ion-button>
+
+    <div class="date-display" (click)="openDatePicker()">
+      <span>{{ formattedDate }}</span>
+    </div>
+
+    <ion-button (click)="nextDay()" fill="clear">
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-button>
+  </div>
 </ion-content>

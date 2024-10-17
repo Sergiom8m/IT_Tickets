@@ -92,8 +92,6 @@ export class ReservationFormPage implements OnInit {
     // Verificar solapamientos
     const overlappingReservations = await this.checkOverlappingReservations();
 
-    console.log('Reservas que se solapan:', overlappingReservations);
-
     if (overlappingReservations.length > 0) {
       for (const existingReservation of overlappingReservations) {
         // Comparar el kilometraje
