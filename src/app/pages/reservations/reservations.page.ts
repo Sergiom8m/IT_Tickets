@@ -51,15 +51,22 @@ export class ReservationsPage {
   }
 
   getReservationsForVehicle(vehicleId: string) {
-    const selectedDateObj = new Date(this.selectedDate); // Convertimos la fecha seleccionada a un objeto Date
+    // Convertimos la fecha seleccionada a un objeto Date
+    const selectedDateObj = new Date(this.selectedDate);
+    
+    // Normalizamos la fecha para que solo contenga el día (sin hora)
+    const startOfDay = new Date(selectedDateObj);
+    startOfDay.setHours(0, 0, 0, 0); // Establecer a 00:00:00.000
+    const endOfDay = new Date(selectedDateObj);
+    endOfDay.setHours(23, 59, 59, 999); // Establecer a 23:59:59.999
   
     return this.reservations
       .filter(reservation => reservation.vehicleId === vehicleId) // Filtrar por el vehículo
       .filter(reservation => {
         const startDate = new Date(reservation.startDate);
         const endDate = new Date(reservation.endDate);
-        // Verificar si la fecha seleccionada cae entre startDate y endDate
-        return selectedDateObj >= startDate && selectedDateObj <= endDate;
+        // Verificar si la fecha seleccionada cae entre el inicio y fin del día de la reserva
+        return startDate <= endOfDay && endDate >= startOfDay;
       })
       .map(reservation => {
         const user = this.users.find(user => user.uid === reservation.userId);
@@ -133,5 +140,16 @@ export class ReservationsPage {
   getVehicleImage(model: string): string {
     const imageName = model.toLowerCase().replace(/\s+/g, '_'); // Convierte "Dacia Duster" a "dacia_duster"
     return `../../../assets/${imageName}.png`; // Asumiendo que la imagen sigue el patrón [nombre].png
+  }
+
+  formatReservationDate(dateString: string): string {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Asegúrate de que el mes esté en dos dígitos
+    const day = String(date.getDate()).padStart(2, '0'); // Asegúrate de que el día esté en dos dígitos
+    const hours = String(date.getHours()).padStart(2, '0'); // Asegúrate de que la hora esté en dos dígitos
+    const minutes = String(date.getMinutes()).padStart(2, '0'); // Asegúrate de que los minutos estén en dos dígitos
+  
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
   }
 }

@@ -1,3 +1,4 @@
+/* Fondo general */
 .reservations-background {
   --background: none;
   background-image: url('../../../assets/bg.jpg');
@@ -8,12 +9,14 @@
   height: 100vh;
 }
 
+/* Contenedor de la fecha */
 .date-container {
   display: flex;
-  justify-content: center; /* Centra la tarjeta en el contenedor */
-  margin: 16px;  
+  justify-content: center;
+  margin: 16px;
 }
 
+/* Tarjeta de fecha */
 .date-card {
   display: flex;
   align-items: center;
@@ -22,53 +25,95 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   padding: 10px;
-  margin: 0; /* Elimina el margen para que no afecte el ancho */
-  width: 300px; /* Ajusta el ancho según sea necesario */
-  max-width: 90%; /* Asegura que no ocupe más del 90% del ancho de la pantalla */
+  margin: 0;
+  width: 300px;
+  max-width: 90%;
   background: rgba(255, 255, 255, 0.9);
 }
 
 .date-display {
   cursor: pointer;
   padding: 0 10px;
-  font-size: 18px; /* Ajusta según necesites */
+  font-size: 18px;
 }
 
+/* Lista de vehículos */
 .vehicle-list {
   display: flex;
   flex-direction: column;
   padding: 10px;
 }
 
+/* Tarjeta de vehículo */
 .vehicle-card {
-  display: flex; /* Usar flexbox para alinear la imagen y los detalles */
+  display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Centrar verticalmente */
-  background: #fff; /* Fondo blanco */
-  border-radius: 10px; /* Bordes redondeados */
+  align-items: flex-start;
+  background: #fff;
+  border-radius: 10px;
   margin: 10px 0;
-  padding-left: 30px; /* Ajustar el padding */
+  padding-left: 30px;
   padding-top: 20px;
   background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: transform 0.2s; /* Animación al hacer hover */
+  transition: transform 0.2s;
 }
 
+/* Imagen de vehículo */
 .vehicle-image {
-  width: 80px; /* Ancho de la imagen */
-  height: auto; /* Mantener la relación de aspecto */
-  margin-right: 10px; /* Espacio entre la imagen y los detalles */
+  width: 80px;
+  height: auto;
+  margin-right: 10px;
 }
 
+/* Detalles del vehículo */
 .vehicle-details {
-  flex-grow: 1; /* Permitir que el contenedor de detalles ocupe el espacio restante */
+  flex-grow: 1;
 }
 
+/* Tarjeta de reserva */
 .reservation-card {
-  background: #f0f0f0; /* Fondo gris claro para la tarjeta de reserva */
-  border-radius: 5px; /* Bordes redondeados */
-  padding: 10px; /* Espaciado interno */
-  margin-top: 10px; /* Margen superior para separación */
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Sombra ligera */
+  width: 200px;
+  height: 150px;
+  background-color: rgba(255, 255, 255, 0.75);
+  border-radius: 5px;
+  padding: 6px; /* Reducir aún más el padding interno */
+  margin-top: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Estados de las tarjetas de reserva */
+.active-card {
+  background-color: #d4edda;
+  border: 1px solid #28a745;
+  padding: 8px; /* Reducir padding */
+  border-radius: 8px;
+}
+
+.inactive-card {
+  background-color: #f8d7da;
+  border: 1px solid #dc3545;
+  padding: 8px; /* Reducir padding */
+  border-radius: 8px;
+}
+
+/* Estilo de los textos dentro de la tarjeta */
+.reservation-card p {
+  display: flex;
+  align-items: center;
+  margin: 2px 0; /* Reducir margen entre campos */
+  font-size: 13px; /* Disminuir más el tamaño del texto */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+ion-icon {
+  margin-right: 4px; /* Reducir aún más el espacio entre icono y texto */
 }
