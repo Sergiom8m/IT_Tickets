@@ -1,3 +1,12 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Reservas</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/vehicles"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content class="reservations-background">
   <div class="date-container">
     <div class="date-card">
@@ -12,6 +21,29 @@
       <ion-button (click)="nextDay()" fill="clear">
         <ion-icon name="chevron-forward-outline"></ion-icon>
       </ion-button>
+    </div>
+  </div>
+
+  <div class="vehicle-list">
+    <div *ngFor="let vehicle of vehicles" class="vehicle-card" (click)="toggleVehicle(vehicle)">
+      <img [src]="getVehicleImage(vehicle.model)" alt="Vehicle Image" class="vehicle-image" />
+      <div class="vehicle-details">
+        <h2>{{ vehicle.model }}</h2>
+        <p>{{ vehicle.licensePlate }}</p>
+      </div>
+  
+      <!-- Detalles de reservas -->
+      <div *ngIf="selectedVehicle === vehicle" class="reservations-details">
+        <p>Detalles de las reservas para este vehículo:</p>
+        <div *ngFor="let reservation of vehicle.reservations" class="reservation-card">
+          <p>Reserva ID: {{ reservation.id }}</p>
+          <p>Fecha Inicio: {{ reservation.startDate }}</p>
+          <p>Fecha Fin: {{ reservation.endDate }}</p>
+          <p>Km Estimados: {{ reservation.estimatedKm }}</p>
+          <p>Código de Proyecto: {{ reservation.projectCode }}</p>
+        </div>
+        <p *ngIf="vehicle.reservations.length === 0">No hay reservas para este vehículo hasta ahora.</p>
+      </div>
     </div>
   </div>
 </ion-content>
