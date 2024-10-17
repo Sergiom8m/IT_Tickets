@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { Vehicle } from 'src/app/models';
 import { FirestoreService } from 'src/app/services/firestore.service';
 
@@ -17,6 +17,7 @@ export class VehiclesPage implements OnInit {
   constructor(
     private firestoreService: FirestoreService,
     private alertController: AlertController,
+    private toastController: ToastController,
     private router: Router
   ) { }
 
@@ -34,7 +35,7 @@ export class VehiclesPage implements OnInit {
     this.router.navigate(['/reservation_form'], { queryParams: { vehicle_id: vehicleId } });
   }
 
-  async editVehicle(vehicle: Vehicle) {
+  async editVehicleStatus(vehicle: Vehicle) {
     const alert = await this.alertController.create({
       header: 'Editar Vehículo',
       inputs: [
@@ -68,7 +69,7 @@ export class VehiclesPage implements OnInit {
             const needsRepair = data.includes('needsRepair');
             const needsFuel = data.includes('needsFuel');
 
-            this.saveChanges(vehicle, needsRepair, needsFuel);
+            this.saveNewState(vehicle, needsRepair, needsFuel);
           }
         }
       ]
@@ -77,7 +78,47 @@ export class VehiclesPage implements OnInit {
     await alert.present();
   }
 
-  saveChanges(vehicle: Vehicle, needsRepair: boolean, needsFuel: boolean) {
+  async editVehicleInfo(vehicle: Vehicle) {
+    const alert = await this.alertController.create({
+      header: 'Información del vehículo: ' + vehicle.licensePlate,
+      inputs: [
+        {
+          name: 'info',
+          type: 'textarea',
+          value: vehicle.info, // Mostrar el valor actual de la info del vehículo
+          placeholder: 'Introduzca la información del vehículo'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Edición cancelada');
+            return true; // Retorna true para cerrar el alert
+          }
+        },
+        {
+          text: 'Guardar',
+          handler: (data) => {
+            if (data.info && data.info.trim().length > 0) {
+              vehicle.info = data.info.trim(); // Asignar el nuevo valor a la propiedad 'info'
+              this.saveVehicleInfo(vehicle); // Guardar los cambios en Firestore
+              return true; // Devuelve true para cerrar el alert tras el guardado
+            } else {
+              this.showToast('El campo de información no puede estar vacío');
+              return false; // Impedir que el alert se cierre si la validación falla
+            }
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
+  }
+
+  saveNewState(vehicle: Vehicle, needsRepair: boolean, needsFuel: boolean) {
 
     vehicle.needsRepair = needsRepair;
     vehicle.needsFuel = needsFuel;
@@ -89,6 +130,25 @@ export class VehiclesPage implements OnInit {
       .catch(error => {
         console.error('Error al actualizar vehículo:', error);
       });
+  }
+
+  saveVehicleInfo(vehicle: Vehicle) {
+    this.firestoreService.updateDoc(vehicle, this.path, vehicle.licensePlate)
+      .then(() => {
+        console.log('Información del vehículo actualizada');
+      })
+      .catch(error => {
+        console.error('Error al actualizar información del vehículo:', error);
+      });
+  }
+  
+  async showToast(msg: string) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000,
+      color: 'light'
+    });
+    toast.present();
   }
 
   getVehicleImage(model: string): string {

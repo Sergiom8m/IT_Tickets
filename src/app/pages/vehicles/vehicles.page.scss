@@ -86,3 +86,16 @@ ion-card-content p {
   color: grey;
   font-size: 18px;
 }
+
+/* Contenedor del ícono de info */
+.info-icon-container {
+  position: absolute; /* Posición absoluta para colocar el ícono en la esquina superior derecha */
+  top: 10px; /* Ajusta la distancia desde la parte superior */
+  left: 10px; /* Ajusta la distancia desde la derecha */
+}
+
+/* Estilo del botón de info */
+.info-button {
+  color: grey;
+  font-size: 18px;
+}

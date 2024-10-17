@@ -27,6 +27,7 @@ export interface Vehicle {
     isFourByFour: boolean;
     needsFuel: boolean;
     needsRepair: boolean;
+    info: string;
   }
 
   export interface Reservation {

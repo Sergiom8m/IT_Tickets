@@ -16,8 +16,13 @@
       <ion-col size="6" size-md="4" *ngFor="let vehicle of vehicles">
         <ion-card class="vehicle-card" (click)="goToReservationForm(vehicle.licensePlate)">
           <div class="edit-icon-container">
-            <ion-button fill="clear" (click)="editVehicle(vehicle); $event.stopPropagation()" class="edit-button">
+            <ion-button fill="clear" (click)="editVehicleStatus(vehicle); $event.stopPropagation()" class="edit-button">
               <i class="fa-solid fa-pen-to-square"></i>
+            </ion-button>
+          </div>
+          <div class="info-icon-container">
+            <ion-button fill="clear" (click)="editVehicleInfo(vehicle); $event.stopPropagation()" class="info-button">
+              <i class="fa-solid fa-circle-info"></i>
             </ion-button>
           </div>
           <img [src]="getVehicleImage(vehicle.model)" alt="Vehicle">
