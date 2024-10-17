@@ -28,8 +28,9 @@ const routes: Routes = [
     canActivate: [authGuard]
   },
   {
-    path: 'reservation',
-    loadChildren: () => import('./pages/reservation/reservation.module').then( m => m.ReservationPageModule)
+    path: 'reservation_form',
+    loadChildren: () => import('./pages/reservation_form/reservation_form.module').then( m => m.ReservationFormPageModule),
+    canActivate: [authGuard]
   },
 ];
 

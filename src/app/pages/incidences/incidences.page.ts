@@ -181,11 +181,11 @@ export class IncidencesPage implements OnInit {
   
   markAsCompleted(incidence: Incidence) {
     const newStatus = incidence.status === 'resolved' ? 'open' : 'resolved';
-    const updates: { status: string; resolvedAt?: Date | null } = { status: newStatus };
+    const updates: { status: string; resolvedAt?: string | null } = { status: newStatus };
   
     // Si estamos marcando la incidencia como 'resolved', establecer 'resolvedAt' a la fecha actual
     if (newStatus === 'resolved') {
-      updates.resolvedAt = new Date();
+      updates.resolvedAt = new Date().toDateString();
     } else {
       updates.resolvedAt = null; // Establecer 'resolvedAt' en null al marcar como 'open'
     }

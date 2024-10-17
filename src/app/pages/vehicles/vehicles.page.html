@@ -14,7 +14,7 @@
   <ion-grid>
     <ion-row>
       <ion-col size="6" size-md="4" *ngFor="let vehicle of vehicles">
-        <ion-card class="vehicle-card" (click)="goToReservation(vehicle.licensePlate)">
+        <ion-card class="vehicle-card" (click)="goToReservationForm(vehicle.licensePlate)">
           <div class="edit-icon-container">
             <ion-button fill="clear" (click)="editVehicle(vehicle); $event.stopPropagation()" class="edit-button">
               <i class="fa-solid fa-pen-to-square"></i>

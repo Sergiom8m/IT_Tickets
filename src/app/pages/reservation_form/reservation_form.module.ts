@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ReservationPageRoutingModule } from './reservation-routing.module';
+import { ReservationPageRoutingModule } from './reservation_form-routing.module';
 
-import { ReservationPage } from './reservation.page';
+import { ReservationFormPage } from './reservation_form.page';
 
 @NgModule({
   imports: [
@@ -15,6 +15,6 @@ import { ReservationPage } from './reservation.page';
     IonicModule,
     ReservationPageRoutingModule
   ],
-  declarations: [ReservationPage]
+  declarations: [ReservationFormPage]
 })
-export class ReservationPageModule {}
+export class ReservationFormPageModule {}

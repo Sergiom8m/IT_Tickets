@@ -8,10 +8,10 @@ import { FirestoreService } from 'src/app/services/firestore.service';
 
 @Component({
   selector: 'app-reservation',
-  templateUrl: './reservation.page.html',
-  styleUrls: ['./reservation.page.scss'],
+  templateUrl: './reservation_form.page.html',
+  styleUrls: ['./reservation_form.page.scss'],
 })
-export class ReservationPage implements OnInit {
+export class ReservationFormPage implements OnInit {
 
   path = "Reservas/";
 
@@ -22,8 +22,8 @@ export class ReservationPage implements OnInit {
     id: '',
     vehicleId: '', // Esto debería ser pasado desde la tarjeta del vehículo
     userId: '', // Debes obtener el ID del usuario actual
-    startDate: new Date().toISOString(),
-    endDate: new Date().toISOString(),
+    startDate: this.convertToISOWithOffset(new Date()),
+    endDate: this.convertToISOWithOffset(new Date()),
     estimatedKm: 0,
     projectCode: '',
   };
@@ -74,6 +74,7 @@ export class ReservationPage implements OnInit {
   }
 
   reserveVehicle() {
+    
     // Validar que todos los campos estén completos y que los kilómetros no sean cero
     if (!this.reservation.startDate || !this.reservation.endDate || !this.reservation.estimatedKm || this.reservation.estimatedKm <= 0) {
       this.showToast('Por favor completa todos los campos y asegúrate de que los kilómetros sean mayores que 0.');
@@ -116,13 +117,14 @@ export class ReservationPage implements OnInit {
     await this.loading.present();
   }
 
-  private formatDate(date: Date): string {
-    return date.toISOString().slice(0, 16); // Devuelve la cadena en formato ISO (YYYY-MM-DDTHH:mm)
-  }
-
   getVehicleImage(model: string): string {
     const imageName = model.toLowerCase().replace(/\s+/g, '_'); // Convierte "Dacia Duster" a "dacia_duster"
     return `../../../assets/${imageName}.png`; // Asumiendo que la imagen sigue el patrón [nombre].png
+  }
+
+  private convertToISOWithOffset(date: Date): string {
+    const localDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
+    return localDate.toISOString().slice(0, 19); // Remover los milisegundos y los segundos
   }
   
 }

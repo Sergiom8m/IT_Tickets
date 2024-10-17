@@ -30,8 +30,8 @@ export class VehiclesPage implements OnInit {
     });
   }
 
-  goToReservation(vehicleId: string) {
-    this.router.navigate(['/reservation'], { queryParams: { vehicle_id: vehicleId } });
+  goToReservationForm(vehicleId: string) {
+    this.router.navigate(['/reservation_form'], { queryParams: { vehicle_id: vehicleId } });
   }
 
   async editVehicle(vehicle: Vehicle) {
