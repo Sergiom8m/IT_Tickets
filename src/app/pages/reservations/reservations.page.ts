@@ -51,15 +51,23 @@ export class ReservationsPage {
   }
 
   getReservationsForVehicle(vehicleId: string) {
+    const selectedDateObj = new Date(this.selectedDate); // Convertimos la fecha seleccionada a un objeto Date
+  
     return this.reservations
-        .filter(reservation => reservation.vehicleId === vehicleId)
-        .map(reservation => {
-            const user = this.users.find(user => user.uid === reservation.userId);
-            return {
-                ...reservation,
-                userName: user ? user.name : 'Usuario desconocido'
-            };
-        });
+      .filter(reservation => reservation.vehicleId === vehicleId) // Filtrar por el vehículo
+      .filter(reservation => {
+        const startDate = new Date(reservation.startDate);
+        const endDate = new Date(reservation.endDate);
+        // Verificar si la fecha seleccionada cae entre startDate y endDate
+        return selectedDateObj >= startDate && selectedDateObj <= endDate;
+      })
+      .map(reservation => {
+        const user = this.users.find(user => user.uid === reservation.userId);
+        return {
+          ...reservation,
+          userName: user ? user.name : 'Usuario desconocido'
+        };
+      });
   }
 
   toggleVehicle(vehicle: Vehicle) {
