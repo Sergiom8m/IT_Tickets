@@ -31,18 +31,19 @@
         <h2>{{ vehicle.model }}</h2>
         <p>{{ vehicle.licensePlate }}</p>
       </div>
-  
+      
       <!-- Detalles de reservas -->
       <div *ngIf="selectedVehicle === vehicle" class="reservations-details">
         <p>Detalles de las reservas para este vehículo:</p>
-        <div *ngFor="let reservation of vehicle.reservations" class="reservation-card">
+        <div *ngFor="let reservation of getReservationsForVehicle(vehicle.licensePlate)" class="reservation-card">
           <p>Reserva ID: {{ reservation.id }}</p>
           <p>Fecha Inicio: {{ reservation.startDate }}</p>
           <p>Fecha Fin: {{ reservation.endDate }}</p>
           <p>Km Estimados: {{ reservation.estimatedKm }}</p>
           <p>Código de Proyecto: {{ reservation.projectCode }}</p>
+          <p>Nombre Usuario: {{ reservation.userName }}</p> <!-- Mostrar el nombre del usuario -->
         </div>
-        <p *ngIf="vehicle.reservations.length === 0">No hay reservas para este vehículo hasta ahora.</p>
+        <p *ngIf="getReservationsForVehicle(vehicle.licensePlate).length === 0">No hay reservas para este vehículo hasta ahora.</p>
       </div>
     </div>
   </div>

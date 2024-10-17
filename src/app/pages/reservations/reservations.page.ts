@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { Vehicle } from 'src/app/models';
+import { Reservation, User, Vehicle } from 'src/app/models';
 import { FirestoreService } from 'src/app/services/firestore.service';
 
 @Component({
@@ -12,8 +12,11 @@ export class ReservationsPage {
   selectedDate: string;
   formattedDate: string;
   vehicles: any[] = []; // Para almacenar los vehículos
+  reservations: any[] = []; // Para almacenar las reservas
   selectedVehicle: Vehicle | null = null; // Para manejar el vehículo seleccionado
+  users: User[] = []; // Para almacenar los usuarios
   path_vehicles = "Vehiculos/";
+  path_reservations = "Reservas/";
 
   constructor(
     private alertController: AlertController,
@@ -24,14 +27,39 @@ export class ReservationsPage {
   }
 
   ngOnInit() {
-    this.loadVehicles(); // Carga los vehículos al inicializar
-    console.log(this.vehicles);
+    this.loadVehicles();
+    this.loadReservations();
+    this.loadUsers();
   }
 
   loadVehicles() {
     this.firestoreService.getCollection<Vehicle>(this.path_vehicles).subscribe((vehicles) => {
       this.vehicles = vehicles; // Almacena los vehículos en la variable
     });
+  }
+
+  loadReservations() {
+    this.firestoreService.getCollection<Reservation>(this.path_reservations).subscribe((reservations) => {
+      this.reservations = reservations; // Almacena las reservas en la variable
+    });
+  }
+
+  loadUsers() {
+    this.firestoreService.getCollection<User>('Usuarios').subscribe((users) => {
+      this.users = users; // Almacena los usuarios en la variable
+    });
+  }
+
+  getReservationsForVehicle(vehicleId: string) {
+    return this.reservations
+        .filter(reservation => reservation.vehicleId === vehicleId)
+        .map(reservation => {
+            const user = this.users.find(user => user.uid === reservation.userId);
+            return {
+                ...reservation,
+                userName: user ? user.name : 'Usuario desconocido'
+            };
+        });
   }
 
   toggleVehicle(vehicle: Vehicle) {
