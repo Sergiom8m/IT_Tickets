@@ -37,4 +37,5 @@ export interface Vehicle {
     endDate: string; 
     estimatedKm: number; 
     projectCode: string; 
+    active: boolean;
   }

@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Reservation, User, Vehicle } from 'src/app/models';
 import { AuthService } from 'src/app/services/auth.service';
 import { FirestoreService } from 'src/app/services/firestore.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-reservation',
@@ -26,6 +27,7 @@ export class ReservationFormPage implements OnInit {
     endDate: this.convertToISOWithOffset(new Date()),
     estimatedKm: 0,
     projectCode: '',
+    active: true
   };
 
   private reservationSubscription: Subscription | null = null;
@@ -73,7 +75,7 @@ export class ReservationFormPage implements OnInit {
     }
   }
 
-  reserveVehicle() {
+  async reserveVehicle() {
     
     // Validar que todos los campos estén completos y que los kilómetros no sean cero
     if (!this.reservation.startDate || !this.reservation.endDate || !this.reservation.estimatedKm || this.reservation.estimatedKm <= 0) {
@@ -87,6 +89,25 @@ export class ReservationFormPage implements OnInit {
     this.reservation.userId = this.user.uid;
     this.reservation.vehicleId = this.vehicle.licensePlate;
 
+    // Verificar solapamientos
+    const overlappingReservations = await this.checkOverlappingReservations();
+
+    console.log('Reservas que se solapan:', overlappingReservations);
+
+    if (overlappingReservations.length > 0) {
+      for (const existingReservation of overlappingReservations) {
+        // Comparar el kilometraje
+        if (existingReservation.estimatedKm > this.reservation.estimatedKm) {
+          this.reservation.active = false; // Si la reserva existente tiene mayor kilometraje, desactivar la nueva
+        } else {
+          // Si la nueva reserva tiene mayor kilometraje, desactivar la existente
+          existingReservation.active = false;
+          await this.firestoreService.updateDoc(existingReservation, this.path, existingReservation.id);
+        }
+      }
+    }
+
+    // Crear la nueva reserva
     this.firestoreService.createDoc(this.reservation, this.path, this.reservation.id)
       .then(() => {
         this.router.navigate(['/vehicles']); // Navegación al menú de vehículos
@@ -98,6 +119,42 @@ export class ReservationFormPage implements OnInit {
         this.showToast('Error creando la reserva');
         this.loading.dismiss();
       });
+  }
+
+  async checkOverlappingReservations(): Promise<Reservation[]> {
+    const startDate = new Date(this.reservation.startDate);
+    const endDate = new Date(this.reservation.endDate);
+  
+    try {
+      // Consultar todas las reservas activas para el vehículo usando FirestoreService
+      const reservations$ = this.firestoreService.getCollectionQuery<Reservation>(this.path, ref => 
+        ref
+          .where('vehicleId', '==', this.vehicle.licensePlate)
+          .where('active', '==', true)
+      );
+  
+      // Obtener las reservas como una promesa usando firstValueFrom
+      const reservations = await firstValueFrom(reservations$);
+  
+      // Verificar si existen reservas
+      if (!reservations || reservations.length === 0) {
+        return []; // No hay reservas que se solapen
+      }
+  
+      // Filtrar las reservas que se solapan
+      const overlappingReservations = reservations.filter(existingReservation => {
+        const existingStartDate = new Date(existingReservation.startDate);
+        const existingEndDate = new Date(existingReservation.endDate);
+  
+        // Comprobar si hay solapamiento de fechas
+        return (startDate < existingEndDate && endDate > existingStartDate);
+      });
+  
+      return overlappingReservations;
+    } catch (error) {
+      console.error('Error al verificar reservas superpuestas:', error);
+      return [];
+    }
   }
 
   async showToast(msg: string) {

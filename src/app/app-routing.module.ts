@@ -31,7 +31,11 @@ const routes: Routes = [
     path: 'reservation_form',
     loadChildren: () => import('./pages/reservation_form/reservation_form.module').then( m => m.ReservationFormPageModule),
     canActivate: [authGuard]
+  },  {
+    path: 'reservations',
+    loadChildren: () => import('./pages/reservations/reservations.module').then( m => m.ReservationsPageModule)
   },
+
 ];
 
 @NgModule({

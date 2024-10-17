@@ -34,4 +34,8 @@ export class FirestoreService {
     return this.database.collection<tipo>(path).valueChanges()
   }
 
+  getCollectionQuery<tipo>(path: string, queryFn: (ref: any) => any) {
+    return this.database.collection<tipo>(path, queryFn).valueChanges();
+  }
+
 }
