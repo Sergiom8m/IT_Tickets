@@ -6,22 +6,29 @@
   background-repeat: no-repeat;
   width: 100vw;
   height: 100vh;
-  }
-  
-  .date-card {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    padding: 10px;
-    margin: 16px;
-  }
-  
-  .date-display {
-    cursor: pointer;
-    padding: 0 10px;
-    font-size: 18px; /* Ajusta según necesites */
-  }
-  
+}
+
+.date-container {
+  display: flex;
+  justify-content: center; /* Centra la tarjeta en el contenedor */
+  margin: 16px;
+}
+
+.date-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  margin: 0; /* Elimina el margen para que no afecte el ancho */
+  width: 300px; /* Ajusta el ancho según sea necesario */
+  max-width: 90%; /* Asegura que no ocupe más del 90% del ancho de la pantalla */
+}
+
+.date-display {
+  cursor: pointer;
+  padding: 0 10px;
+  font-size: 18px; /* Ajusta según necesites */
+}
