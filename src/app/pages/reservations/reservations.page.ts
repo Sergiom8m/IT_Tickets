@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Reservation, User, Vehicle } from 'src/app/models';
+import { AuthService } from 'src/app/services/auth.service';
 import { FirestoreService } from 'src/app/services/firestore.service';
 
 @Component({
@@ -9,8 +10,10 @@ import { FirestoreService } from 'src/app/services/firestore.service';
   styleUrls: ['./reservations.page.scss'],
 })
 export class ReservationsPage {
+
   selectedDate: string;
   formattedDate: string;
+  currentUser: User = {} as User;
   vehicles: any[] = []; // Para almacenar los vehículos
   reservations: any[] = []; // Para almacenar las reservas
   selectedVehicle: Vehicle | null = null; // Para manejar el vehículo seleccionado
@@ -18,9 +21,11 @@ export class ReservationsPage {
   path_vehicles = "Vehiculos/";
   path_reservations = "Reservas/";
 
+
   constructor(
     private alertController: AlertController,
-    private firestoreService: FirestoreService
+    private firestoreService: FirestoreService,
+    private authService: AuthService
   ) {
     this.selectedDate = new Date().toISOString(); // Inicializa con la fecha actual
     this.formattedDate = this.formatDate(this.selectedDate);
@@ -30,6 +35,17 @@ export class ReservationsPage {
     this.loadVehicles();
     this.loadReservations();
     this.loadUsers();
+
+    // Obtener el UID del usuario que ha iniciado sesión
+    this.authService.stateAuth().subscribe(res => {
+      if (res !== null) {
+        const uid = res.uid;
+        // Obtener la información del usuario desde Firestore
+        this.firestoreService.getDoc<User>('Usuarios/', uid).subscribe(userData => {
+          this.currentUser = userData as User;
+        });
+      }
+    });
   }
 
   loadVehicles() {
@@ -79,6 +95,57 @@ export class ReservationsPage {
 
   toggleVehicle(vehicle: Vehicle) {
     this.selectedVehicle = this.selectedVehicle === vehicle ? null : vehicle; // Alternar entre mostrar y ocultar detalles
+  }
+
+  async deleteReservation(reservationId: string) {
+    // Verificar si el usuario es un admin o el propietario de la reserva
+    const reservation = this.reservations.find(r => r.id === reservationId);
+    if (!reservation) {
+      console.error('Reserva no encontrada');
+      return;
+    }
+  
+  
+    // Si el usuario actual es admin o el propietario de la reserva
+    if (this.currentUser?.role === 'admin' || reservation.userId === this.currentUser.uid) {
+      // Mostrar confirmación
+      const alert = await this.alertController.create({
+        header: 'Confirmar',
+        message: '¿Estás seguro de que deseas eliminar esta reserva?',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: () => {
+              console.log('Eliminación cancelada');
+            },
+          },
+          {
+            text: 'Confirmar',
+            handler: () => {
+              // Llamar al servicio para borrar la reserva
+              this.firestoreService.deleteDoc(this.path_reservations, reservationId)
+                .then(() => {
+                  console.log('Reserva eliminada');
+                })
+                .catch((error) => {
+                  console.error('Error al eliminar la reserva:', error);
+                });
+            },
+          },
+        ],
+      });
+  
+      await alert.present();
+    } else {
+      // Si el usuario no tiene permisos
+      const alert = await this.alertController.create({
+        header: 'Permiso Denegado',
+        message: 'No tienes permiso para eliminar esta reserva.',
+        buttons: ['OK'],
+      });
+      await alert.present();
+    }
   }
 
   formatDate(date: string) {

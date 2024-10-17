@@ -34,33 +34,37 @@
       
       <!-- Detalles de reservas -->
       <div *ngIf="selectedVehicle === vehicle" class="reservations-details">
-        <ion-grid>
-          <ion-row>
-            <ion-col size="6" *ngFor="let reservation of getReservationsForVehicle(vehicle.licensePlate)">
-              <div class="reservation-card" [ngClass]="{'active-card': reservation.active, 'inactive-card': !reservation.active}">
-                <p>
-                  <ion-icon name="calendar"></ion-icon>
-                  {{ formatReservationDate(reservation.startDate) }} <!-- Formateamos la fecha de inicio -->
-                </p>
-                <p>
-                  <ion-icon name="calendar"></ion-icon> 
-                  {{ formatReservationDate(reservation.endDate) }} <!-- Formateamos la fecha de fin -->
-                </p>
-                <p>
-                  <i class="fa-solid fa-route" style="padding-right:4px;"></i>
-                  {{ reservation.estimatedKm }}km
-                </p>
-                <p>
-                  <ion-icon name="person"></ion-icon> 
-                  {{ reservation.userName }}
-                </p>
-              </div>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+        <div class="reservations-row">
+          <div *ngFor="let reservation of getReservationsForVehicle(vehicle.licensePlate)" 
+               class="reservation-card" 
+               [ngClass]="{'active-card': reservation.active, 'inactive-card': !reservation.active}">
+            <p>
+              <ion-icon name="calendar"></ion-icon>
+              {{ formatReservationDate(reservation.startDate) }}
+            </p>
+            <p>
+              <ion-icon name="calendar"></ion-icon> 
+              {{ formatReservationDate(reservation.endDate) }}
+            </p>
+            <p>
+              <i class="fa-solid fa-route" style="padding-right:4px;"></i>
+              {{ reservation.estimatedKm }}km
+            </p>
+            <p>
+              <ion-icon name="person"></ion-icon> 
+              {{ reservation.userName }}
+            </p>
+
+            <!-- Botón para eliminar la reserva -->
+            <ion-button (click)="deleteReservation(reservation.id)" fill="clear" color="danger">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
       
         <p *ngIf="getReservationsForVehicle(vehicle.licensePlate).length === 0">No hay reservas para este vehículo hasta ahora.</p>
       </div>
+      
     </div>
   </div>
 </ion-content>
