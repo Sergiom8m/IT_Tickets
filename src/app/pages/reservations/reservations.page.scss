@@ -75,7 +75,7 @@
 
 /* Tarjeta de reserva */
 .reservation-card {
-  width: calc(50% - 10px); /* Dos tarjetas por fila con margen */
+  width: 170px;
   height: 150px;
   background-color: rgba(255, 255, 255, 0.75);
   border-radius: 5px;
@@ -92,14 +92,14 @@
 /* Estados de las tarjetas de reserva */
 .active-card {
   background-color: #d4edda;
-  border: 1px solid #28a745;
+  border: 2px solid #28a745;
   padding: 8px; /* Reducir padding */
   border-radius: 8px;
 }
 
 .inactive-card {
   background-color: #f8d7da;
-  border: 1px solid #dc3545;
+  border: 2px solid #dc3545;
   padding: 8px; /* Reducir padding */
   border-radius: 8px;
 }
@@ -110,13 +110,11 @@
   align-items: center;
   margin: 2px 0; /* Reducir margen entre campos */
   font-size: 13px; /* Disminuir más el tamaño del texto */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 ion-icon {
   margin-right: 4px; /* Reducir aún más el espacio entre icono y texto */
+  color: grey
 }
 
 /* Fila de reservas */
