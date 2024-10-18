@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
-import { Vehicle } from 'src/app/models';
+import { User, Vehicle } from 'src/app/models';
+import { AuthService } from 'src/app/services/auth.service';
 import { FirestoreService } from 'src/app/services/firestore.service';
 
 @Component({
@@ -11,11 +12,16 @@ import { FirestoreService } from 'src/app/services/firestore.service';
 })
 export class VehiclesPage implements OnInit {
 
-  vehicles: any[] = []; 
+  vehicles: Vehicle[] = []; 
   path = "Vehiculos/";
+  user: User = {} as User;
+
+
+  isAdmin = false;
 
   constructor(
     private firestoreService: FirestoreService,
+    private authService: AuthService,
     private alertController: AlertController,
     private toastController: ToastController,
     private router: Router
@@ -23,11 +29,22 @@ export class VehiclesPage implements OnInit {
 
   ngOnInit() {
     this.loadVehicles();
+    this.authService.stateAuth().subscribe(res => {
+      if (res !== null) {
+        const uid = res.uid;
+        // Obtener la información del usuario desde Firestore
+        this.firestoreService.getDoc<User>('Usuarios/', uid).subscribe(userData => {
+          this.user = userData as User;
+          this.isAdmin = this.user.role === 'admin';
+        });
+      }
+    });
   }
 
-  loadVehicles() {
+  async loadVehicles() {
     this.firestoreService.getCollection<Vehicle>(this.path).subscribe(vehicles => {
       this.vehicles = vehicles;
+    console.log('Vehículos cargados:', this.vehicles);
     });
   }
 
@@ -79,43 +96,65 @@ export class VehiclesPage implements OnInit {
   }
 
   async editVehicleInfo(vehicle: Vehicle) {
+    console.log('Editando información del vehículo:', vehicle);
+    
     const alert = await this.alertController.create({
-      header: 'Información del vehículo: ' + vehicle.licensePlate,
-      inputs: [
-        {
-          name: 'info',
-          type: 'textarea',
-          value: vehicle.info, // Mostrar el valor actual de la info del vehículo
-          placeholder: 'Introduzca la información del vehículo'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Edición cancelada');
-            return true; // Retorna true para cerrar el alert
-          }
-        },
-        {
-          text: 'Guardar',
-          handler: (data) => {
-            if (data.info && data.info.trim().length > 0) {
-              vehicle.info = data.info.trim(); // Asignar el nuevo valor a la propiedad 'info'
-              this.saveVehicleInfo(vehicle); // Guardar los cambios en Firestore
-              return true; // Devuelve true para cerrar el alert tras el guardado
-            } else {
-              this.showToast('El campo de información no puede estar vacío');
-              return false; // Impedir que el alert se cierre si la validación falla
+        header: 'Información del vehículo: ' + vehicle.licensePlate,
+        cssClass: 'custom-alert',
+        inputs: [
+            {
+                name: 'info',
+                type: 'textarea',
+                value: vehicle.info,
+                placeholder: 'Introduzca la información del vehículo'
+            },
+            {
+                name: 'itvDate',
+                type: 'date',
+                value: vehicle.itv,
+                placeholder: 'Seleccione la fecha de la ITV',
+                attributes: {
+                    disabled: !this.isAdmin 
+                }
             }
-          }
-        }
-      ]
+        ],
+        buttons: [
+            {
+                text: 'Cancelar',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: () => {
+                    console.log('Edición cancelada');
+                    return true;
+                }
+            },
+            {
+                text: 'Guardar',
+                handler: (data) => {
+                  vehicle.info = data.info.trim();
+                  // Solo actualizar la fecha de ITV si es administrador
+                  if (this.isAdmin) {
+                      vehicle.itv = data.itvDate;
+                  }
+                  this.saveVehicleInfo(vehicle);
+                  return true;
+                    
+                }
+            }
+        ]
     });
-  
+
     await alert.present();
+}
+
+  isITVDueSoon(itvDate: string): boolean {
+    const today = new Date();
+    const itv = new Date(itvDate);
+    const diffInTime = itv.getTime() - today.getTime();
+    const diffInDays = diffInTime / (1000 * 3600 * 24); // Convertir diferencia a días
+    const res = diffInDays <= 30; // Devuelve true si queda menos de un mes
+    console.log('ITV:', itvDate, 'Días restantes:', diffInDays, '¿Próxima ITV?', res);
+    return res;
   }
 
   saveNewState(vehicle: Vehicle, needsRepair: boolean, needsFuel: boolean) {

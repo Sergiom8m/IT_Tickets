@@ -14,7 +14,7 @@
   <ion-grid>
     <ion-row>
       <ion-col size="6" size-md="4" *ngFor="let vehicle of vehicles">
-        <ion-card class="vehicle-card" (click)="goToReservationForm(vehicle.licensePlate)">
+        <ion-card *ngIf="vehicle.active" class="vehicle-card" (click)="goToReservationForm(vehicle.licensePlate)">
           <div class="edit-icon-container">
             <ion-button fill="clear" (click)="editVehicleStatus(vehicle); $event.stopPropagation()" class="edit-button">
               <i class="fa-solid fa-pen-to-square"></i>
@@ -34,8 +34,12 @@
           <ion-card-header>
             <ion-card-title>{{ vehicle.model }}</ion-card-title>
           </ion-card-header>
+
           <ion-card-content>
             <p>{{ vehicle.licensePlate }}</p>
+            <p *ngIf="isITVDueSoon(vehicle.itv)">
+              <img src="../../../assets/itv.jpg" alt="ITV" style="width: 30px; height: 30px;" />
+            </p>
           </ion-card-content>
         </ion-card>
       </ion-col>

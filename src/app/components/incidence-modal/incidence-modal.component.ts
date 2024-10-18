@@ -15,6 +15,7 @@ export class IncidenceModalComponent implements OnInit {
   title: string = '';
   description: string = '';
   priority: number = 1; 
+  incidenceType: string = '';
 
   @Input() incidence: Incidence | null = null; // Añadir propiedad para la incidencia a editar
 
@@ -28,6 +29,7 @@ export class IncidenceModalComponent implements OnInit {
       this.title = this.incidence.title;
       this.description = this.incidence.description;
       this.priority = this.incidence.priority;
+      this.incidenceType = this.incidence.incidenceType || '';
     }
   }
 
@@ -45,6 +47,7 @@ export class IncidenceModalComponent implements OnInit {
       createdAt: this.incidence ? this.incidence.createdAt : new Date().toDateString(),
       priority: this.priority,
       resolvedAt: this.incidence ? this.incidence.resolvedAt : null, // Mantener el estado de resuelto si se edita
+      incidenceType: this.incidenceType
     };
 
     this.modalController.dismiss(updatedIncidence, 'confirm');

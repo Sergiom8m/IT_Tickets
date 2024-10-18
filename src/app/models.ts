@@ -4,7 +4,6 @@ export interface User {
     email: string;
     password: string;
     confirmPassword?: string;
-    telephone: string;
     code: string;
     department: string;
     role: 'admin' | 'user';
@@ -19,6 +18,7 @@ export interface Incidence{
     createdAt: Date;
     resolvedAt?: string;
     priority: number;
+    incidenceType: string;
 }
 
 export interface Vehicle {
@@ -27,7 +27,9 @@ export interface Vehicle {
     isFourByFour: boolean;
     needsFuel: boolean;
     needsRepair: boolean;
+    itv: string;
     info: string;
+    active: boolean;
   }
 
   export interface Reservation {

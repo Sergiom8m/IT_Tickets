@@ -19,6 +19,18 @@
   </ion-item>
 
   <ion-item>
+    <ion-label>Tipo de Incidencia</ion-label>
+    <ion-select [(ngModel)]="incidenceType" interface="popover" placeholder="Seleccione un tipo">
+      <ion-select-option value="Compra de equipos">Compra de equipos</ion-select-option>
+      <ion-select-option value="Compra de software">Compra de software</ion-select-option>
+      <ion-select-option value="Avería Equipo">Avería Equipo</ion-select-option>
+      <ion-select-option value="Avería Software">Avería Software</ion-select-option>
+      <ion-select-option value="Mantenimiento">Mantenimiento</ion-select-option>
+      <ion-select-option value="Mantenimiento">Ciberseguridad</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
     <ion-label>Prioridad</ion-label>
     <ion-range
       min="1"

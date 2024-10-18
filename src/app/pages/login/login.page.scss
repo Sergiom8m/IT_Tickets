@@ -50,3 +50,10 @@ form {
   padding: 20px; /* Espaciado interno */
 }
 
+.user-image {
+  object-fit: cover; /* Mantiene la proporción de la imagen */
+  margin: 25px auto 10px auto; /* Ajusta el margen para centrar vertical y horizontalmente */
+  display: block; /* Hace que la imagen se comporte como un bloque para aplicar el centrado */
+}
+
+

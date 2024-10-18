@@ -13,7 +13,6 @@ import { LoadingController, ToastController } from '@ionic/angular';
 })
 export class LoginPage {
 
-  segment: 'login' | 'register' = 'login'; 
   uid = ''; 
   path = 'Usuarios/';
   loading: any;
@@ -23,13 +22,11 @@ export class LoginPage {
     name: '',
     email: '',
     password: '',
-    confirmPassword: '',
     telephone: '',
     code: '',
     department: '',
     role: 'user'
   } as User;
-
 
   constructor(
     private router: Router,
@@ -63,7 +60,6 @@ export class LoginPage {
       name: '',
       email: '',
       password: '',
-      confirmPassword: '',
       telephone: '',
       code: '',
       department: '',
@@ -71,49 +67,15 @@ export class LoginPage {
     } as User; // Reinicia completamente el objeto user
   }
 
-  async register() {
-    await this.showLoading();
-  
-    const isValid = await this.validateUserInput('register');
-    if (!isValid) {
-      this.loading.dismiss(); // Cerrar loading si falla la validación
-      return;
-    }
-  
-    this.firebaseAuthService.register(this.actualUser.email, this.actualUser.password).then(res => {
-      if (res.user) {
-        const uid = res.user.uid; 
-        this.actualUser.uid = uid;
-  
-        this.firestoreService.createDoc(this.actualUser, this.path, uid).then(() => {
-          console.log('Usuario registrado correctamente');
-          this.initUser(); // Limpiar campos después de registrar
-          this.loading.dismiss(); // Asegurarse de cerrar el loading en éxito
-          this.router.navigate(['/home']); 
-        }).catch(error => {
-          this.loading.dismiss(); // Cerrar loading si hay error al crear el documento
-          console.error('Error al crear el documento del usuario:', error);
-          this.showToast('Error al registrar el usuario.');
-        });
-      }
-    }).catch(error => {
-      this.loading.dismiss(); // Cerrar loading si hay error al registrar
-      if (error.code === 'auth/email-already-in-use') {
-        this.showToast('El correo electrónico ya está en uso por otra cuenta.');
-      } else {
-        this.showToast('Error al registrar el usuario.');
-      }
-    });
-  }
   async login() {
     await this.showLoading();
-  
-    const isValid = await this.validateUserInput('login');
+
+    const isValid = await this.validateUserInput();
     if (!isValid) {
       this.loading.dismiss(); // Cerrar loading si falla la validación
       return;
     }
-  
+
     this.firebaseAuthService.login(this.actualUser.email, this.actualUser.password).then(res => {
       if (res.user) {
         this.initUser(); // Limpiar campos después de iniciar sesión
@@ -128,32 +90,23 @@ export class LoginPage {
   }
 
   // Función para realizar todas las validaciones de los formularios
-  async validateUserInput(action: 'register' | 'login') {
-    if (!this.actualUser.email || !this.actualUser.password || 
-        (action === 'register' && !this.actualUser.name) || 
-        (action === 'register' && !this.actualUser.telephone) || 
-        (action === 'register' && !this.actualUser.code) || 
-        (action === 'register' && !this.actualUser.department)) {
+  async validateUserInput() {
+    if (!this.actualUser.email || !this.actualUser.password) {
       await this.showToast('Todos los campos son obligatorios.');
       return false;
     }
-  
+
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(this.actualUser.email)) {
       await this.showToast('Formato de email no válido.');
       return false;
     }
-  
-    if (action === 'register' && this.actualUser.password !== this.actualUser.confirmPassword) {
-      await this.showToast('Las contraseñas no coinciden.');
-      return false;
-    }
-  
+
     if (this.actualUser.password.length < 6) {
       await this.showToast('La contraseña debe tener al menos 6 caracteres.');
       return false;
     }
-  
+
     return true;
   }
 

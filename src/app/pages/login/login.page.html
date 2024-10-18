@@ -1,17 +1,11 @@
 <ion-content>
   <ion-card>
     <ion-card-content>
-      <ion-segment [(ngModel)]="segment">
-        <ion-segment-button value="login">
-          Iniciar Sesión
-        </ion-segment-button>
-        <ion-segment-button value="register">
-          Registrarse
-        </ion-segment-button>
-      </ion-segment>
+
+      <img class="user-image" src='assets/header.png' alt="User Image"/>
 
       <!-- Formulario de Login -->
-      <form *ngIf="segment === 'login'" (submit)="login()">
+      <form (submit)="login()">
         <ion-item>
           <ion-icon name="mail-outline" slot="start"></ion-icon>
           <ion-label position="floating">Email</ion-label>
@@ -25,45 +19,6 @@
         <ion-button expand="full" type="submit">Iniciar Sesión</ion-button>
       </form>
 
-      <!-- Formulario de Registro -->
-      <form *ngIf="segment === 'register'" (submit)="register()">
-        <ion-item>
-          <ion-icon name="person-outline" slot="start"></ion-icon>
-          <ion-label position="floating">Nombre</ion-label>
-          <ion-input type="text" [(ngModel)]="actualUser.name" name="name" required></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-icon name="mail-outline" slot="start"></ion-icon>
-          <ion-label position="floating">Email</ion-label>
-          <ion-input type="email" [(ngModel)]="actualUser.email" name="email" required></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
-          <ion-label position="floating">Contraseña</ion-label>
-          <ion-input type="password" [(ngModel)]="actualUser.password" name="password" required></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
-          <ion-label position="floating">Confirmar Contraseña</ion-label>
-          <ion-input type="password" [(ngModel)]="actualUser.confirmPassword" name="confirmPassword" required></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-icon name="call-outline" slot="start"></ion-icon>
-          <ion-label position="floating">Teléfono</ion-label>
-          <ion-input type="tel" [(ngModel)]="actualUser.telephone" name="telephone"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-icon name="pricetag-outline" slot="start"></ion-icon>
-          <ion-label position="floating">Código</ion-label>
-          <ion-input type="text" [(ngModel)]="actualUser.code" name="code"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-icon name="business-outline" slot="start"></ion-icon>
-          <ion-label position="floating">Departamento</ion-label>
-          <ion-input type="text" [(ngModel)]="actualUser.department" name="department"></ion-input>
-        </ion-item>
-        <ion-button expand="full" type="submit">Registrarse</ion-button>
-      </form>
     </ion-card-content>
   </ion-card>
 </ion-content>
