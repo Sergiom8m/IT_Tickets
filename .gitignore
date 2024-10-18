@@ -13,6 +13,7 @@ $RECYCLE.BIN/
 log.txt
 
 /data_loading/priv.json
+/data_loading/users.csv
 
 /.sourcemaps
 /.versions
