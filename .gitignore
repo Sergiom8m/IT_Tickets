@@ -12,6 +12,7 @@ $RECYCLE.BIN/
 *.log
 log.txt
 
+/data_loading/priv.json
 
 /.sourcemaps
 /.versions
