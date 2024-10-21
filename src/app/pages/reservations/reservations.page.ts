@@ -98,17 +98,13 @@ export class ReservationsPage {
   }
 
   async deleteReservation(reservationId: string) {
-    // Verificar si el usuario es un admin o el propietario de la reserva
     const reservation = this.reservations.find(r => r.id === reservationId);
     if (!reservation) {
       console.error('Reserva no encontrada');
       return;
     }
   
-  
-    // Si el usuario actual es admin o el propietario de la reserva
     if (this.currentUser?.role === 'admin' || reservation.userId === this.currentUser.uid) {
-      // Mostrar confirmación
       const alert = await this.alertController.create({
         header: 'Confirmar',
         message: '¿Estás seguro de que deseas eliminar esta reserva?',
@@ -123,10 +119,10 @@ export class ReservationsPage {
           {
             text: 'Confirmar',
             handler: () => {
-              // Llamar al servicio para borrar la reserva
               this.firestoreService.deleteDoc(this.path_reservations, reservationId)
                 .then(() => {
                   console.log('Reserva eliminada');
+                  this.checkAndUpdateInactiveReservations();
                 })
                 .catch((error) => {
                   console.error('Error al eliminar la reserva:', error);
@@ -138,7 +134,6 @@ export class ReservationsPage {
   
       await alert.present();
     } else {
-      // Si el usuario no tiene permisos
       const alert = await this.alertController.create({
         header: 'Permiso Denegado',
         message: 'No tienes permiso para eliminar esta reserva.',
@@ -146,6 +141,32 @@ export class ReservationsPage {
       });
       await alert.present();
     }
+  }
+  
+  // Verifica si alguna reserva inactiva ya no se solapa y puede activarse
+  checkAndUpdateInactiveReservations() {
+    this.reservations.forEach((reservation) => {
+      if (!reservation.active) {
+        const overlaps = this.reservations.some(otherReservation => 
+          otherReservation.active &&
+          otherReservation.vehicleId === reservation.vehicleId &&
+          ((new Date(reservation.startDate) <= new Date(otherReservation.endDate)) &&
+          (new Date(reservation.endDate) >= new Date(otherReservation.startDate)))
+        );
+  
+        if (!overlaps) {
+          // No hay solapamientos, se puede activar la reserva
+          reservation.active = true;
+          this.firestoreService.updateDoc({ active: true }, this.path_reservations, reservation.id)
+            .then(() => {
+              console.log('Reserva activada:', reservation.id);
+            })
+            .catch((error) => {
+              console.error('Error al activar la reserva:', error);
+            });
+        }
+      }
+    });
   }
 
   formatDate(date: string) {
